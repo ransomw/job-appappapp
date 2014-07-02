@@ -1,10 +1,13 @@
 define([
-    'react'
-], function(React) {
+    'react',
+    'lodash'
+], function(React, _) {
 
     var ListItem = React.createClass({
         render: function() {
-            return React.DOM.li(null, this.props.company.name);
+            return React.DOM.tr(null, [
+                React.DOM.td({key: 'name'}, this.props.company.name)
+            ]);
         }
     });
 
@@ -17,7 +20,7 @@ define([
                 companies.push(ListItem({key: idx, company: all_companies[idx]}));
             }
 
-            return React.DOM.ul(null, companies);
+            return React.DOM.table(null, companies);
         }
     });
 

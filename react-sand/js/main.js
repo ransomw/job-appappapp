@@ -3,6 +3,7 @@ require.config({
     paths: {
         'react': 'bower_components/react/react',
         'domReady': 'bower_components/requirejs-domready/domReady',
+        'lodash': 'bower_components/lodash/dist/lodash.min',
 
         'components': 'js/components'
     }

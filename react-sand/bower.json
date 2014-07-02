@@ -12,6 +12,7 @@
     "dependencies": {
         "requirejs": "2.1.14",
         "requirejs-domready": "2.0.1",
-			  "react": "0.10.0"
+			  "react": "0.10.0",
+        "lodash": "2.4.1"
     }
 }
