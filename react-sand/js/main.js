@@ -10,9 +10,12 @@ require.config({
 });
 
 require([
-    'react', 'components/HelloApp.react', 'components/CompanyList.react',
+    'react',
+    'components/HelloApp.react',
+    'components/CompanyList.react',
+    'components/CompanyForm.react',
     'domReady!'
-], function (React, HelloApp, CompanyList) {
+], function (React, HelloApp, CompanyList, CompanyForm) {
 
     var company_data = [
         {name: 'google', visa: true},
@@ -22,7 +25,8 @@ require([
 
     React.renderComponent(
         // HelloApp({name: 'ransom'}),
-        CompanyList({all_companies: company_data}),
+        // CompanyList({all_companies: company_data}),
+        CompanyForm(),
         document.getElementById('sandapp')
     );
 });
