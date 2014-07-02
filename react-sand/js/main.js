@@ -13,7 +13,7 @@ require([
     'domReady!'
 ], function (React, HelloApp) {
     React.renderComponent(
-        HelloApp(),
+        HelloApp({name: 'ransom'}),
         document.getElementById('sandapp')
     );
 });

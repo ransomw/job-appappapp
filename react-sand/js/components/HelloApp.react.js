@@ -3,9 +3,9 @@ define([
 ], function(React) {
     var App = React.createClass({
         render: function() {
-          return React.DOM.p(null, "hello world");
+            return React.DOM.p(null, "hello " + this.props.name);
         }
-      });
+    });
 
     return App;
 });
