@@ -4,18 +4,28 @@ require.config({
         'react': 'bower_components/react/react',
         'domReady': 'bower_components/requirejs-domready/domReady',
         'lodash': 'bower_components/lodash/dist/lodash.min',
+        'when': 'bower_components/when',
 
-        'components': 'js/components'
-    }
+        'components': 'js/components',
+        'stores': 'js/stores',
+        'actions': 'js/actions',
+        'constants': 'js/constants',
+        'util': 'js/util'
+    },
+    packages: [
+        {name: 'when', path: 'bower_components/when', main: 'when'}
+    ]
 });
 
 require([
     'react',
     'components/HelloApp.react',
+    'components/CompanyApp.react',
     'components/CompanyList.react',
     'components/CompanyForm.react',
     'domReady!'
-], function (React, HelloApp, CompanyList, CompanyForm) {
+], function (React, HelloApp, CompanyApp, CompanyList, CompanyForm) {
+    "use strict";
 
     var company_data = [
         {name: 'google', visa: true},
@@ -26,7 +36,8 @@ require([
     React.renderComponent(
         // HelloApp({name: 'ransom'}),
         // CompanyList({all_companies: company_data}),
-        CompanyForm(),
+        // CompanyForm(),
+        CompanyApp(),
         document.getElementById('sandapp')
     );
 });
