@@ -1,7 +1,8 @@
 define([
     'lodash',
-    'util/merge'
-], function(_, merge) {
+    'util/merge',
+    'when'
+], function(_, merge, when) {
     "use strict";
 
     var _callbacks = [];
@@ -17,8 +18,17 @@ define([
         },
 
         dispatch: function(payload) {
+
+            _promises = _.map(_callbacks, function(callback) {
+                var p = when.defer();
+                p.resolve(callback(payload));
+            });
+
+/*
+
             var resolves = [];
             var rejects = [];
+
             _promises = _callbacks.map(function(_, i) {
                 return new Promise(function(resolve, reject) {
                     resolves[i] = resolve;
@@ -36,14 +46,15 @@ define([
                 });
             });
             _promises = [];
-        },
-
-        waitFor: function(/*array*/ promiseIndexes, /*function*/ callback) {
-            var selectedPromises = promiseIndexes.map(function(index) {
-                return _promises[index];
-            });
-            return Promise.all(selectedPromises).then(callback);
+*/
         }
+
+        // , waitFor: function(/*array*/ promiseIndexes, /*function*/ callback) {
+        //     var selectedPromises = promiseIndexes.map(function(index) {
+        //         return _promises[index];
+        //     });
+        //     return Promise.all(selectedPromises).then(callback);
+        // }
 
     });
 

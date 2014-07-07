@@ -1,14 +1,15 @@
 define([
     'react',
-    'lodash'
-], function(React, _) {
+    'lodash',
+		'actions/ViewActions',
+], function(React, _, actions) {
 
 
     var CompanyForm = React.createClass({
 
         on_save_click: function(event) {
             var company_name = this.refs.name.getDOMNode().value.trim();
-            alert("clicked save with company name '" + company_name + "'");
+						actions.create_company({name: company_name});
         },
 
 
