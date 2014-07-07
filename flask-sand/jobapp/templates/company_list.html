@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>Company List</h2>
+<ul>
+	{% for company in companies %}
+	<li>{{ company.name }}</li>
+	{% endfor %}
+</ul>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
   <h2>New Company</h2>
-  <form action="{{ url_for('create_company') }}" method="post">
+  <form action="{{ url_self }}" method="post">
     <dl>
       <dt>Name:
       <dd><input type="text" name="name">
