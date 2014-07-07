@@ -18,12 +18,13 @@ _LEN_APP_STAT = 2
 companies = Table(
     'companies', metadata,
     Column('id', Integer, primary_key=True),
-    Column('name', String(_LEN_COMPANY_NAME), nullable=False)
+    Column('name', String(_LEN_COMPANY_NAME), nullable=False, unique=True)
     )
 openings = Table(
     'openings', metadata,
     Column('id', Integer, primary_key=True),
-    Column('name', String(_LEN_COMPANY_NAME), nullable=False),
+    # Column('name', String(_LEN_COMPANY_NAME), nullable=False, unique=True),
+    Column('name', String(_LEN_COMPANY_NAME), unique=True),
     Column('status', String(_LEN_APP_STAT), nullable=False),
     Column('company_id', Integer, ForeignKey('companies.id'), nullable=False)
     )
