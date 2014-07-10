@@ -2,16 +2,19 @@ define([
     'react',
     'stores/MemStore',
     'components/CompanyList.react',
-    'components/CompanyForm.react'
-], function (React, mem_store /*MemStore*/, CompanyList, CompanyForm) {
+    'components/CompanyForm.react',
+    'components/CompanyDetail.react'
+], function (React, mem_store /*MemStore*/, CompanyList, CompanyForm, CompanyDetail) {
     "use strict";
 
     // var mem_store = new MemStore();
 
     var get_app_state = function () {
         var companies = mem_store.get_companies();
+        var curr_company = mem_store.get_curr_company();
         return {
-            companies: companies
+            companies: companies,
+            curr_company: curr_company
         };
     }
 
@@ -30,10 +33,21 @@ define([
         },
 
         render: function () {
-            return React.DOM.div(null, [
-                CompanyList({all_companies: this.state.companies}),
-                CompanyForm(),
-            ]);
+            if (this.state.curr_company === undefined) {
+                return React.DOM.div(null, [
+                    CompanyList({key: 'list',
+                                 all_companies: this.state.companies}),
+                    CompanyForm({key: 'form'}),
+                ]);
+            } else {
+                return React.DOM.div(null, [
+                    CompanyList({key: 'list',
+                                 all_companies: this.state.companies}),
+                    CompanyForm({key: 'form'}),
+                    CompanyDetail({key: 'detail',
+                                   company: {name: this.state.curr_company}})
+                ]);
+            }
         },
 
         _onChange: function() {

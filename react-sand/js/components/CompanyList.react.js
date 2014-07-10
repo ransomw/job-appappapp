@@ -1,12 +1,22 @@
 define([
     'react',
-    'lodash'
-], function(React, _) {
+    'lodash',
+		'actions/ViewActions'
+], function(React, _, actions) {
 
     var ListItem = React.createClass({
+
+        on_sel_click: function (ev) {
+            actions.company_select(this.props.company);
+        },
+
         render: function() {
             return React.DOM.tr(null, [
-                React.DOM.td({key: 'name'}, this.props.company.name)
+                React.DOM.td({key: 'name'}, [
+                    React.DOM.a({
+                        onClick: this.on_sel_click
+                    }, this.props.company.name)
+                ])
             ]);
         }
     });

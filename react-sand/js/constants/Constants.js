@@ -15,7 +15,8 @@ define([
     };
 
     return key_mirror({
-        COMPANY_CREATE: null
+        COMPANY_CREATE: null,
+        COMPANY_SELECT: null
     });
 
 });

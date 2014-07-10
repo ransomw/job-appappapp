@@ -11,6 +11,7 @@ define([
 
 
     var _companies = {};
+    var _curr_company = undefined;
 
     function create_company(info) {
         // Using the current timestamp in place of a real id.
@@ -32,6 +33,10 @@ define([
 
     MemStore.prototype.get_companies = function() {
         return _companies;
+    };
+
+    MemStore.prototype.get_curr_company = function () {
+        return _curr_company;
     };
 
     var _change_callbacks = [];
@@ -58,8 +63,11 @@ define([
         var action = payload.action;
 
         switch(action.actionType) {
-        case 'COMPANY_CREATE':
+        case Constants.COMPANY_CREATE:
             create_company(action.info);
+            break;
+        case Constants.COMPANY_SELECT:
+            _curr_company = _companies[action.info.id];
             break;
         default:
             return true;
