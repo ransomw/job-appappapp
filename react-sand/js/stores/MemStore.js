@@ -11,13 +11,28 @@ define([
 
 
     var _companies = {};
+    var _positions = {};
     var _curr_company = undefined;
 
+    /**
+     * store information relevant to a company that you're applying to
+     */
     function create_company(info) {
         // Using the current timestamp in place of a real id.
         var id = Date.now();
         _companies[id] = info;
         _companies[id].id = id;
+    };
+
+    /**
+     * store information relevant to a particular job position at a company
+     * since some companies might have multiple open jobs
+     */
+    function create_position(info, company_id) {
+        var id = Date.now();
+        _positions[id] = info;
+        _positions[id].id = id
+        _positions[id].company_id = company_id;
     };
 
     var MemStore = function () {};
@@ -29,7 +44,6 @@ define([
     //     }
 
     // });
-
 
     MemStore.prototype.get_companies = function() {
         return _companies;
