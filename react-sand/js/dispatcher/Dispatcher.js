@@ -1,14 +1,16 @@
+/*global define: false */
+/*jslint nomen: true*/ // tolerate dangling _
+
 define([
     'lodash',
     'util/merge',
     'when'
-], function(_, merge, when) {
+], function (_, merge, when) {
     "use strict";
 
-    var _callbacks = [];
-    var _promises = [];
-
-    var Dispatcher = function() {};
+    var _callbacks = [],
+        _Promises = [],
+        Dispatcher = Object.create(null); // the Dispatcher is a singleton
 
     Dispatcher.prototype = merge.merge(Dispatcher.prototype, {
 
