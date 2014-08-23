@@ -1,8 +1,16 @@
+/*global define: false */
+/*jslint nomen: true*/ // tolerate dangling _
+
 define([
-    'lodash',
+    // 'lodash',
     'util/merge',
     'js/dispatcher/Dispatcher'
-], function (_, merge, Dispatcher) {
+], function (
+    // _,
+    merge,
+    Dispatcher
+) {
+    "use strict";
 
     var AppDispatcher;
     AppDispatcher = merge.merge(Dispatcher.prototype, {
