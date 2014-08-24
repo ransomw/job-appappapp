@@ -8,12 +8,20 @@ define([
     'js/dispatcher/AppDispatcher',
     'js/constants/Constants',
     'util/event'
-], function (_, merge, AppDispatcher, Constants, event) {
+], function (
+    _,
+    merge,
+    AppDispatcher,
+    Constants,
+    event
+) {
     "use strict";
 
-    var _companies = {},
+    var MemStore = Object.create(null),
+        _companies = {},
         _positions = {},
-        _curr_company = undefined;
+        _curr_company;
+
 
     /**
      * store information relevant to a company that you're applying to
@@ -23,7 +31,7 @@ define([
         var id = Date.now();
         _companies[id] = info;
         _companies[id].id = id;
-    } ;
+    };
 
     /**
      * store information relevant to a particular job position at a company
@@ -32,11 +40,9 @@ define([
     function create_position(info, company_id) {
         var id = Date.now();
         _positions[id] = info;
-        _positions[id].id = id
+        _positions[id].id = id;
         _positions[id].company_id = company_id;
     };
-
-    var MemStore = function () {};
 
     // MemStore.prototype = merge.merge(MemStore.prototype, {
 
@@ -46,6 +52,8 @@ define([
 
     // });
 
+
+/*
     MemStore.prototype.get_companies = function() {
         return _companies;
     };
@@ -71,8 +79,37 @@ define([
             _change_callbacks[idx]();
         }
     };
+*/
 
-    var mem_store = new MemStore();
+    // var mem_store = new MemStore();
+
+
+    MemStore.get_companies = function() {
+        return _companies;
+    };
+
+    MemStore.get_curr_company = function () {
+        return _curr_company;
+    };
+
+    var _change_callbacks = [];
+
+    MemStore.addChangeListener = function (callback) {
+        _change_callbacks.push(callback);
+    };
+
+    MemStore.removeChangeListener = function (callback) {
+        // TODO XXX
+        console.log("***unimplemented***");
+        throw new Error("unimplemented");
+    };
+
+    MemStore.emit_change = function () {
+        for (var idx in _change_callbacks) {
+            _change_callbacks[idx]();
+        }
+    };
+
 
     AppDispatcher.register(function (payload) {
         var action = payload.action;
@@ -89,7 +126,7 @@ define([
             // throw new Error("unknown action type '" + action.actionType + "'");
         }
 
-        mem_store.emit_change();
+        MemStore.emit_change();
 
         return true;
     });
@@ -103,6 +140,6 @@ define([
 
     // return MemStore;
 
-    return mem_store;
+    return MemStore;
 
 });
