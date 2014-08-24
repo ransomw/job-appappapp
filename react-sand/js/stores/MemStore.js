@@ -1,3 +1,5 @@
+/*global define: false */
+/*jslint nomen: true*/
 // in-memory storage
 
 define([
@@ -6,13 +8,12 @@ define([
     'js/dispatcher/AppDispatcher',
     'js/constants/Constants',
     'util/event'
-], function(_, merge, AppDispatcher, Constants, event) {
+], function (_, merge, AppDispatcher, Constants, event) {
+    "use strict";
 
-
-
-    var _companies = {};
-    var _positions = {};
-    var _curr_company = undefined;
+    var _companies = {},
+        _positions = {},
+        _curr_company = undefined;
 
     /**
      * store information relevant to a company that you're applying to
@@ -22,7 +23,7 @@ define([
         var id = Date.now();
         _companies[id] = info;
         _companies[id].id = id;
-    };
+    } ;
 
     /**
      * store information relevant to a particular job position at a company
