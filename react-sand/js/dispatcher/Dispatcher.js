@@ -14,14 +14,14 @@ define([
 
     Dispatcher.prototype = merge.merge(Dispatcher.prototype, {
 
-        register: function(callback) {
+        register: function (callback) {
             _callbacks.push(callback);
             return _callbacks.length - 1; // index
         },
 
-        dispatch: function(payload) {
+        dispatch: function (payload) {
 
-            _promises = _.map(_callbacks, function(callback) {
+            _promises = _.map(_callbacks, function (callback) {
                 var p = when.defer();
                 p.resolve(callback(payload));
             });
