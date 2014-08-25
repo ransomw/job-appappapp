@@ -53,7 +53,7 @@ define([
     // });
 
 
-/*
+/* 
     MemStore.prototype.get_companies = function() {
         return _companies;
     };
@@ -69,7 +69,7 @@ define([
     };
 
     MemStore.prototype.removeChangeListener = function (callback) {
-        // TODO XXX
+
         console.log("***unimplemented***");
         throw new Error("unimplemented");
     };
@@ -98,11 +98,13 @@ define([
         _change_callbacks.push(callback);
     };
 
+    /*jslint todo: true */
     MemStore.removeChangeListener = function (callback) {
         // TODO XXX
         console.log("***unimplemented***");
         throw new Error("unimplemented");
     };
+    /*jslint todo: false */
 
     MemStore.emit_change = function () {
         for (var idx in _change_callbacks) {
