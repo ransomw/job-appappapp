@@ -16,7 +16,7 @@ define([
             companies: companies,
             curr_company: curr_company
         };
-    }
+    };
 
     var CompaniesApp = React.createClass({
 
@@ -35,16 +35,16 @@ define([
         render: function () {
             if (this.state.curr_company === undefined) {
                 return React.DOM.div(null, [
-                    CompanyList({key: 'list',
+                    CompanyList({key: 'CompanyList',
                                  all_companies: this.state.companies}),
-                    CompanyForm({key: 'form'}),
+                    CompanyForm({key: 'CompanyForm'})
                 ]);
             } else {
                 return React.DOM.div(null, [
-                    CompanyList({key: 'list',
+                    CompanyList({key: 'CompanyList',
                                  all_companies: this.state.companies}),
-                    CompanyForm({key: 'form'}),
-                    CompanyDetail({key: 'detail',
+                    CompanyForm({key: 'CompanyForm'}),
+                    CompanyDetail({key: 'CompanyDetail',
                                    company: {name: this.state.curr_company}})
                 ]);
             }

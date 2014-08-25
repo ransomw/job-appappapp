@@ -37,7 +37,7 @@ require([
         // HelloApp({name: 'ransom'}),
         // CompanyList({all_companies: company_data}),
         // CompanyForm(),
-        CompanyApp(),
+        CompanyApp({key: 'CompanyApp'}),
         document.getElementById('sandapp')
     );
 });
