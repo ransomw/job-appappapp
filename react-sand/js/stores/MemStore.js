@@ -17,7 +17,7 @@ define([
 ) {
     "use strict";
 
-    var MemStore = Object.create(null),
+    var MemStore = Object.create(new String('MemStore')),
         _companies = {},
         _positions = {},
         _curr_company;

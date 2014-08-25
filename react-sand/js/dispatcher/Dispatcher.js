@@ -10,7 +10,7 @@ define([
 
     var _callbacks = [],
         _Promises = [],
-        Dispatcher = Object.create(null); // the Dispatcher is a singleton
+        Dispatcher = Object.create(new String('Dispatcher'));
 
     Dispatcher.prototype = merge.merge(Dispatcher.prototype, {
 
