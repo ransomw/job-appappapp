@@ -10,7 +10,7 @@ define([
 
     var _callbacks = [],
         _Promises = [],
-        Dispatcher = Object.create(new String('Dispatcher'));
+        Dispatcher = Object.create({'Dispatcher': null});
 
     Dispatcher.prototype = merge.merge(Dispatcher.prototype, {
 
