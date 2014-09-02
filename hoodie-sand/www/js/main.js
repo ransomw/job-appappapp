@@ -16,20 +16,16 @@ require([
     'hoodie',
     'jquery',
     'bower_components/lodash/dist/lodash.min',
-    'js/util',
+    'js/const',
     'bower_components/requirejs-domready/domReady!'
-], function (Hoodie, $, _, util) {
-
-    var STORE_TYPES = util.key_mirror({
-        company: null
-    });
+], function (Hoodie, $, _, CONST) {
 
     var hoodie = new Hoodie();
     console.log(hoodie);
 
     var _$list = $('#company-list');
     var render_list = function () {
-        hoodie.store.findAll(STORE_TYPES.company)
+        hoodie.store.findAll(CONST.store_types.company)
             .done(function (companies) {
                 console.log(companies);
                 console.log(
@@ -48,11 +44,11 @@ require([
 
     var _init_data = function () {
         console.log("init_data unimplemented");
-        return hoodie.store.removeAll(STORE_TYPES.company)
+        return hoodie.store.removeAll(CONST.store_types.company)
             .then(function (removed_companies) {
                 console.log("removed companies");
                 console.log(removed_companies);
-                return hoodie.store.add(STORE_TYPES.company, {'name': "去哪理"});
+                return hoodie.store.add(CONST.store_types.company, {'name': "去哪理"});
             });
         // .done(function (new_company) {});
     };
@@ -61,7 +57,7 @@ require([
         $('#company-input').on('keypress', function(event) {
             // ENTER & non-empty.
             if (event.keyCode === 13 && event.target.value.length) {
-                hoodie.store.add(STORE_TYPES.company, {name: event.target.value})
+                hoodie.store.add(CONST.store_types.company, {name: event.target.value})
                     .done(function (company) {
                         console.log(company);
                         render_list();
