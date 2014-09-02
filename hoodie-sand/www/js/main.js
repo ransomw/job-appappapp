@@ -21,16 +21,11 @@ require([
 ], function (Hoodie, $, _, CONST) {
 
     var hoodie = new Hoodie();
-    console.log(hoodie);
 
     var _$list = $('#company-list');
     var render_list = function () {
         hoodie.store.findAll(CONST.store_types.company)
             .done(function (companies) {
-                console.log(companies);
-                console.log(
-                    _.map(companies, function (co) { return co.name; })
-                );
                 _$list.html('');
                 _$list.append(
                     _.map(companies, function (co) {
@@ -43,11 +38,8 @@ require([
     var _password = 'password';
 
     var _init_data = function () {
-        console.log("init_data unimplemented");
         return hoodie.store.removeAll(CONST.store_types.company)
             .then(function (removed_companies) {
-                console.log("removed companies");
-                console.log(removed_companies);
                 return hoodie.store.add(CONST.store_types.company, {'name': "去哪理"});
             });
         // .done(function (new_company) {});
@@ -59,7 +51,6 @@ require([
             if (event.keyCode === 13 && event.target.value.length) {
                 hoodie.store.add(CONST.store_types.company, {name: event.target.value})
                     .done(function (company) {
-                        console.log(company);
                         render_list();
                     });
                 event.target.value = '';
@@ -67,7 +58,6 @@ require([
         });
         render_list();
     };
-
 
     var sign_in = function () {
         return hoodie.account.signOut()
