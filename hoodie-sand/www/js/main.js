@@ -40,7 +40,6 @@ require([
     var hoodie = new Hoodie();
     console.log(hoodie);
 
-
     var _$list = $('#company-list');
     var render_list = function () {
         hoodie.store.findAll(STORE_TYPES.company)
@@ -57,9 +56,19 @@ require([
             });
     };
 
-
     var _username = 'ransom';
     var _password = 'password';
+
+    var _init_data = function () {
+        console.log("init_data unimplemented");
+        return hoodie.store.removeAll(STORE_TYPES.company)
+            .then(function (removed_companies) {
+                console.log("removed companies");
+                console.log(removed_companies);
+                return hoodie.store.add(STORE_TYPES.company, {'name': "去哪理"});
+            });
+        // .done(function (new_company) {});
+    };
 
     var _init_ui = function () {
         $('#company-input').on('keypress', function(event) {
@@ -105,6 +114,14 @@ require([
     };
 
     sign_in().then(function (sign_in_res) {
+        // sign_in_res === _username
+        return _init_data();
+    }, function (err) {
+        alert("sign-in error; see console log");
+        console.log(err);
+        _init_ui();
+    }).then(function (new_company) {
+        // debugger;
         _init_ui();
     }, function (err) {
         alert("sign-in error; see console log");
