@@ -16,7 +16,9 @@ define([
                 _$list.append(
                     _.map(companies, function (co) {
                         return '<li ' +
-                            'onClick=alert("click_unimplemented")'
+                            "onClick=alert('" +
+                            co.id+"'"+
+                            ')'
                             + '>' + co.name + '</li>';
                     }).join(''));
             });
