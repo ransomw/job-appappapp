@@ -16,24 +16,11 @@ require([
     'hoodie',
     'jquery',
     'bower_components/lodash/dist/lodash.min',
+    'js/util',
     'bower_components/requirejs-domready/domReady!'
-], function (Hoodie, $, _) {
+], function (Hoodie, $, _, util) {
 
-
-    // note that there is no type-checking to ensure the argument is an Object
-    var _key_mirror = function(obj) {
-        var ret = {};
-        var key;
-        for (key in obj) {
-            if (!obj.hasOwnProperty(key)) {
-                continue;
-            }
-            ret[key] = key;
-        }
-        return ret;
-    };
-
-    var STORE_TYPES = _key_mirror({
+    var STORE_TYPES = util.key_mirror({
         company: null
     });
 
