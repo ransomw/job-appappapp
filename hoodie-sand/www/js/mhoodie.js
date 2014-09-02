@@ -2,7 +2,7 @@ define([
     'hoodie',
     'jquery',
     'bower_components/lodash/dist/lodash.min',
-    'js/const',
+    'js/const'
 ], function (Hoodie, $, _, CONST) {
 
 
@@ -15,8 +15,20 @@ define([
                 _$list.html('');
                 _$list.append(
                     _.map(companies, function (co) {
-                        return '<li>' + co.name + '</li>';
+                        return '<li ' +
+                            'onClick=alert("click_unimplemented")'
+                            + '>' + co.name + '</li>';
                     }).join(''));
+            });
+    };
+
+    var _$detail = $('#company-detail');
+    var render_detail = function (co_id) {
+        hoodie.store.find(CONST.store_types.company, co_id)
+            .done(function (co_info) {
+                $('#company-detail.company_name').html('');
+                $('#company-detail.company_name')
+                    .append(co_info.name);
             });
     };
 
@@ -35,7 +47,7 @@ define([
         $('#company-input').on('keypress', function(event) {
             // ENTER & non-empty.
             if (event.keyCode === 13 && event.target.value.length) {
-                hoodie.store.add(CONST.store_types.company, {name: event.target.value})
+                add_company({name: event.target.value})
                     .done(function (company) {
                         render_list();
                     });
@@ -51,25 +63,28 @@ define([
                 return hoodie.account.signIn(_username, _password);
             })
             .then(function (sign_in_res) {
-                console.log("hoodie.account.signIn success")
                 return sign_in_res;
             }, function (err) {
                 if (err.message === "Name or password is incorrect.") {
                     hoodie.account.signUp(_username, _password)
                         .then(function (sign_up_res) {
-                            console.log("hoodie.account.signUp success");
                             return sign_in();
                         }, function (err) {
-                            console.log("hoodie.account.signUp error")
                             console.log(err);
                             debugger;
                         });
                 } else {
-                    console.log("hoodie.account.signIn or .signOut error")
                     console.log(err);
                     debugger;
                 }
             });
+    };
+
+    // todo: validation
+    // - no duplicate names
+    // - required and optional parameters
+    var add_company = function (co_info) {
+        return hoodie.store.add(CONST.store_types.company, {name: co_info.name});
     };
 
 
