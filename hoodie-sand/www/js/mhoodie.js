@@ -1,10 +1,10 @@
 define([
     'hoodie',
     'jquery',
+    'when',
     'bower_components/lodash/dist/lodash.min',
     'js/const'
-], function (Hoodie, $, _, CONST) {
-
+], function (Hoodie, $, when, _, CONST) {
 
     var hoodie = new Hoodie();
 
@@ -82,11 +82,29 @@ define([
             });
     };
 
+    var _company_name_exists = function(co_name) {
+        return hoodie.store.findAll(CONST.store_types.company)
+            .then(function (companies) {
+                var named_companies = _.filter(companies, function(co) {
+                    return co.name === co_name;
+                });
+                return named_companies.length > 0;
+            });
+    };
+
     // todo: validation
-    // - no duplicate names
     // - required and optional parameters
     var add_company = function (co_info) {
-        return hoodie.store.add(CONST.store_types.company, {name: co_info.name});
+        return _company_name_exists(co_info.name)
+            .then(function (co_name_exists) {
+                if (co_name_exists) {
+                    alert("company name already exists");
+                    return undefined;
+                } else {
+                    return hoodie.store.add(CONST.store_types.company,
+                                                  {name: co_info.name});
+                }
+            });
     };
 
 

@@ -2,8 +2,12 @@ require.config({
     baseUrl: '',
     paths: {
         'hoodie': '_api/_files/hoodie',
-        'jquery': 'bower_components/jquery/dist/jquery.min'
+        'jquery': 'bower_components/jquery/dist/jquery.min',
+        'when': 'bower_components/when'
     },
+    packages: [
+        {name: 'when', path: 'bower_components/when', main: 'when'}
+    ],
     shim: {
         'hoodie': {
             deps: ['jquery'],
