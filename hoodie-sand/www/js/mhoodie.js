@@ -9,6 +9,9 @@ define([
     var hoodie = new Hoodie();
 
     var _$list = $('#company-list');
+
+    var _$detail = $('#company-detail');
+
     var render_list = function () {
         hoodie.store.findAll(CONST.store_types.company)
             .done(function (companies) {
@@ -16,14 +19,25 @@ define([
             });
     };
 
-    var _$detail = $('#company-detail');
     var render_detail = function (co_id) {
+
+        console.log("rendering company detail in element");
+        console.log(_$detail);
+        _$detail.html([
+            '<h2>',
+            "company detail view unimplemented",
+            '</h2>'
+        ].join(''));
+
+        /*
         hoodie.store.find(CONST.store_types.company, co_id)
             .done(function (co_info) {
                 $('#company-detail.company_name').html('');
                 $('#company-detail.company_name')
                     .append(co_info.name);
             });
+         */
+
     };
 
     var _username = 'ransom';
@@ -49,6 +63,17 @@ define([
             }
         });
         render_list();
+
+
+        render_detail();
+
+
+/*
+        window.setInterval(function () {
+            mhoodie.render_detail();
+        }, 100);
+*/
+
     };
 
     var sign_in = function () {
