@@ -3,8 +3,9 @@ define([
     'jquery',
     'bower_components/lodash/dist/lodash.min',
     'js/const',
-    'js/views'
-], function (Hoodie, $, _, CONST, views) {
+    'js/views',
+    'js/routes'
+], function (Hoodie, $, _, CONST, views, routes) {
 
     var hoodie = new Hoodie();
 
@@ -20,24 +21,18 @@ define([
     };
 
     var render_detail = function (co_id) {
-
-        console.log("rendering company detail in element");
-        console.log(_$detail);
-        _$detail.html([
-            '<h2>',
-            "company detail view unimplemented",
-            '</h2>'
-        ].join(''));
-
-        /*
-        hoodie.store.find(CONST.store_types.company, co_id)
-            .done(function (co_info) {
-                $('#company-detail.company_name').html('');
-                $('#company-detail.company_name')
-                    .append(co_info.name);
-            });
-         */
-
+        window.setInterval(function () {
+            hoodie.store.find(CONST.store_types.company,
+                                    routes.get_company_id())
+                .done(function (co_info) {
+                    _$detail.html([
+                        '<h2>',
+                        "company detail view for ",
+                        co_info.name,
+                        '</h2>'
+                    ].join(''));
+                });
+        }, CONST.render_interval);
     };
 
     var _username = 'ransom';
@@ -63,17 +58,7 @@ define([
             }
         });
         render_list();
-
-
         render_detail();
-
-
-/*
-        window.setInterval(function () {
-            mhoodie.render_detail();
-        }, 100);
-*/
-
     };
 
     var sign_in = function () {
