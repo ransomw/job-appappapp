@@ -1,10 +1,10 @@
 define([
     'hoodie',
     'jquery',
-    'when',
     'bower_components/lodash/dist/lodash.min',
-    'js/const'
-], function (Hoodie, $, when, _, CONST) {
+    'js/const',
+    'js/views'
+], function (Hoodie, $, _, CONST, views) {
 
     var hoodie = new Hoodie();
 
@@ -12,15 +12,7 @@ define([
     var render_list = function () {
         hoodie.store.findAll(CONST.store_types.company)
             .done(function (companies) {
-                _$list.html('');
-                _$list.append(
-                    _.map(companies, function (co) {
-                        return '<li ' +
-                            "onClick=alert('" +
-                            co.id+"'"+
-                            ')'
-                            + '>' + co.name + '</li>';
-                    }).join(''));
+                _$list.html(views.company_list(companies));
             });
     };
 

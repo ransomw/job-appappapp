@@ -3,7 +3,10 @@ require.config({
     paths: {
         'hoodie': '_api/_files/hoodie',
         'jquery': 'bower_components/jquery/dist/jquery.min',
-        'when': 'bower_components/when'
+        'when': 'bower_components/when',
+        'text': 'bower_components/requirejs-text/text',
+        'handlebars': 'bower_components/handlebars/handlebars',
+        'lodash': 'bower_components/lodash/dist/lodash.min'
     },
     packages: [
         {name: 'when', path: 'bower_components/when', main: 'when'}
@@ -12,6 +15,9 @@ require.config({
         'hoodie': {
             deps: ['jquery'],
             exports: 'Hoodie'
+        },
+        'handlebars': {
+            exports: 'Handlebars'
         }
     }
 });
