@@ -1,23 +1,26 @@
+/*global define: false */
+
 define([
 ], function () {
+    "use strict";
 
     var mergeInto = function (one, two) {
-        if (two != null) {
-            for (var key in two) {
-                if (!two.hasOwnProperty(key)) {
-                    continue;
+        var key;
+        if (two !== null) {
+            for (key in two) {
+                if (two.hasOwnProperty(key)) {
+                    one[key] = two[key];
                 }
-                one[key] = two[key];
             }
         }
-    }
+    },
 
-    var merge = function(one, two) {
-        var result = {};
-        mergeInto(result, one);
-        mergeInto(result, two);
-        return result;
-    };
+        merge = function (one, two) {
+            var result = {};
+            mergeInto(result, one);
+            mergeInto(result, two);
+            return result;
+        };
 
     return {
         merge: merge
