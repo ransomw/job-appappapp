@@ -16,8 +16,18 @@ define([
         return company_list_ct({companies: companies});
     };
 
+    var company_detail = function(company) {
+        return [
+            '<h2>',
+            "company detail view for ",
+            company.name,
+            '</h2>'
+        ].join('');
+    };
+
     return {
-        company_list: company_list
+        company_list: company_list,
+        company_detail: company_detail
     };
 
 });

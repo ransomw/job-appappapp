@@ -25,12 +25,7 @@ define([
             hoodie.store.find(CONST.store_types.company,
                                     routes.get_company_id())
                 .done(function (co_info) {
-                    _$detail.html([
-                        '<h2>',
-                        "company detail view for ",
-                        co_info.name,
-                        '</h2>'
-                    ].join(''));
+                    _$detail.html(views.company_detail(co_info));
                 });
         }, CONST.render_interval);
     };
