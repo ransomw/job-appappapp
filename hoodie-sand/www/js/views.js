@@ -19,18 +19,10 @@ define([
     };
 
     var company_detail = function(company) {
-
-        return company_detail_ct(company);
-
-/*
-        return [
-            '<h2>',
-            "company detail view for ",
-            company.name,
-            '</h2>'
-        ].join('');
-*/
-
+        return company_detail_ct({
+            name: company.name,
+            salary: company.salary || ''
+        });
     };
 
     return {

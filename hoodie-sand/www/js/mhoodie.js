@@ -26,6 +26,15 @@ define([
                                     routes.get_company_id())
                 .done(function (co_info) {
                     _$detail.html(views.company_detail(co_info));
+
+                    $('#salary-input').on('keypress', function(event) {
+                        // ENTER & non-empty.
+                        if (event.keyCode === 13 && event.target.value.length) {
+                            alert("update salary unimplemented" +
+                                  " but got value '" + event.target.value + "'");
+                            // event.target.value
+                        }});
+
                 });
         }, CONST.render_interval);
     };
@@ -36,7 +45,8 @@ define([
     var _init_data = function () {
         return hoodie.store.removeAll(CONST.store_types.company)
             .then(function (removed_companies) {
-                return hoodie.store.add(CONST.store_types.company, {'name': "去哪理"});
+                return hoodie.store.add(CONST.store_types.company,
+                                              {'name': "去哪理"});
             });
         // .done(function (new_company) {});
     };
