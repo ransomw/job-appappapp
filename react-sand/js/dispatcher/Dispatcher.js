@@ -9,7 +9,7 @@ define([
     "use strict";
 
     var _callbacks = [],
-        _Promises = [],
+        _promises = [],
         Dispatcher = Object.create({'Dispatcher': null});
 
     Dispatcher.prototype = merge.merge(Dispatcher.prototype, {
@@ -24,6 +24,7 @@ define([
             _promises = _.map(_callbacks, function (callback) {
                 var p = when.defer();
                 p.resolve(callback(payload));
+								return p;
             });
 
 /*
