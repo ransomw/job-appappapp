@@ -24,7 +24,7 @@ define([
             _promises = _.map(_callbacks, function (callback) {
                 var p = when.defer();
                 p.resolve(callback(payload));
-								return p;
+                return p;
             });
 
 /*
