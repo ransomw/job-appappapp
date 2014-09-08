@@ -1,6 +1,9 @@
+/*global define: true */
+
 define([
     'react'
-], function(React) {
+], function (React) {
+    "use strict";
 
     var CompanyDetail = React.createClass({
         render: function () {

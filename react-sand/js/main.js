@@ -19,12 +19,11 @@ require.config({
 
 require([
     'react',
-    'components/HelloApp.react',
     'components/CompanyApp.react',
     'components/CompanyList.react',
     'components/CompanyForm.react',
     'domReady!'
-], function (React, HelloApp, CompanyApp, CompanyList, CompanyForm) {
+], function (React, CompanyApp, CompanyList, CompanyForm) {
     "use strict";
 
     var company_data = [
@@ -34,7 +33,6 @@ require([
     ];
 
     React.renderComponent(
-        // HelloApp({name: 'ransom'}),
         // CompanyList({all_companies: company_data}),
         // CompanyForm(),
         CompanyApp({key: 'CompanyApp'}),
