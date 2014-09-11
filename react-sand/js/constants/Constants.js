@@ -1,15 +1,17 @@
+/*global define: false */
+
 define([
 ], function () {
+    "use strict";
 
     // note that there is no type-checking to ensure the argument is an Object
-    var key_mirror = function(obj) {
-        var ret = {};
-        var key;
+    var key_mirror = function (obj) {
+        var ret = {},
+            key;
         for (key in obj) {
-            if (!obj.hasOwnProperty(key)) {
-                continue;
+            if (obj.hasOwnProperty(key)) {
+                ret[key] = key;
             }
-            ret[key] = key;
         }
         return ret;
     };
