@@ -1,0 +1,24 @@
+{
+  "name": "career-appappapp",
+  "version": "0.0.0",
+  "type": "app",
+  "dependencies": {
+    "hoodie-server": "^0.9.27",
+    "hoodie-plugin-appconfig": "^0.1.0",
+    "hoodie-plugin-email": "^0.1.1",
+    "hoodie-plugin-users": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=0.10.22"
+  },
+  "scripts": {
+    "start": "make start"
+  },
+  "hoodie": {
+    "plugins": [
+      "hoodie-plugin-appconfig",
+      "hoodie-plugin-email",
+      "hoodie-plugin-users"
+    ]
+  }
+}
