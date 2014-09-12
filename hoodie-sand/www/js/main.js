@@ -27,6 +27,8 @@ require([
     'bower_components/requirejs-domready/domReady!'
 ], function (mhoodie) {
 
+		console.log("top of main");
+
     mhoodie.sign_in().then(function (sign_in_res) {
         // sign_in_res === _username
         return mhoodie._init_data();

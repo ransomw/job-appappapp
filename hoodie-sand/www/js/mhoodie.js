@@ -67,18 +67,27 @@ define([
     };
 
     var sign_in = function () {
+				console.log("called mhoodie.sign_in");
         return hoodie.account.signOut()
             .then(function () {
+								console.log("called signOut successfully");
                 return hoodie.account.signIn(_username, _password);
             })
             .then(function (sign_in_res) {
+								console.log("sign_in returning");
+								console.log(sign_in_res);
                 return sign_in_res;
             }, function (err) {
-                if (err.message === "Name or password is incorrect.") {
+								console.log("sign_in error");
+								console.log(err);
+                if (err.name === "HoodieUnauthorizedError") {
+										console.log("signing up for a new account");
                     hoodie.account.signUp(_username, _password)
                         .then(function (sign_up_res) {
+														console.log("recursive sign_in call");
                             return sign_in();
                         }, function (err) {
+														console.log("error signing up for new account");
                             console.log(err);
                             debugger;
                         });
