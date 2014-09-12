@@ -1,8 +1,9 @@
 /*global define: false */
 
 define([
-    'react'
-], function (React) {
+    'react',
+    'components/LoginForm.react'
+], function (React, LoginForm) {
     "use strict";
 
     var get_app_state = function () {
@@ -20,7 +21,9 @@ define([
 
             render: function () {
                 if (!this.state.logged_in) {
-                    return React.DOM.h3(null, "login in view unimplemented");
+                    return React.DOM.div(null, [
+                        new LoginForm({key: 'LoginForm'})
+                    ]);
                 }
                 return React.DOM.h3(null, "logged in view unimplemented");
             }

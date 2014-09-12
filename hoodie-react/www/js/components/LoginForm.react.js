@@ -2,8 +2,9 @@
 /*global alert: false */
 
 define([
-    'react'
-], function (React) {
+    'react',
+    'actions/ViewActions'
+], function (React, actions) {
     "use strict";
 
     var LoginForm = React.createClass({

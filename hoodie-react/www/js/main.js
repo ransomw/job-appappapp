@@ -6,7 +6,8 @@ require.config({
         'when': 'bower_components/when',
         'lodash': 'bower_components/lodash/dist/lodash.min',
 
-        'components': 'js/components'
+        'components': 'js/components',
+        'actions': 'js/actions'
     },
     packages: [
         {name: 'when', path: 'bower_components/when', main: 'when'}
@@ -31,7 +32,6 @@ require([
     console.log("top of main");
     React.renderComponent(
         new CareerApp({key: 'CareerApp'}),
-        // React.DOM.h3(null, "app component unimplemented"),
         document.getElementById('app')
     );
     console.log("called top-level render component");
