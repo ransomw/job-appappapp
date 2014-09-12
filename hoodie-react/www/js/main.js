@@ -1,9 +1,12 @@
 require.config({
     baseUrl: '',
     paths: {
+        'react': 'bower_components/react/react',
         'hoodie': '_api/_files/hoodie',
         'when': 'bower_components/when',
-        'lodash': 'bower_components/lodash/dist/lodash.min'
+        'lodash': 'bower_components/lodash/dist/lodash.min',
+
+        'components': 'js/components'
     },
     packages: [
         {name: 'when', path: 'bower_components/when', main: 'when'}
@@ -16,9 +19,20 @@ require.config({
     }
 });
 
-require([
-    'bower_components/requirejs-domready/domReady!'
-], function () {
+/*global document: false */
 
-		console.log("top of main");
+require([
+    'react',
+    'components/CareerApp.react',
+    'bower_components/requirejs-domready/domReady!'
+], function (React, CareerApp) {
+    "use strict";
+
+    console.log("top of main");
+    React.renderComponent(
+        new CareerApp({key: 'CareerApp'}),
+        // React.DOM.h3(null, "app component unimplemented"),
+        document.getElementById('app')
+    );
+    console.log("called top-level render component");
 });
