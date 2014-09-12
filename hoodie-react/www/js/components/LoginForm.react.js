@@ -9,12 +9,16 @@ define([
 
     var LoginForm = React.createClass({
 
+        _get_username: function () {
+            return this.refs['username'].getDOMNode().value.trim();
+        },
+
         on_login_click: function () {
-            alert("login unimplemented");
+            actions.login(this._get_username());
         },
 
         on_signup_click: function () {
-            alert("sign up unimplemented");
+            actions.signup(this._get_username());
         },
 
         render: function () {
