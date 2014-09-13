@@ -24,7 +24,7 @@ define([
         },
 
         render: function () {
-            return React.DOM.div(null, [
+            return React.DOM.form(null, [
                 React.DOM.input({type: 'text',
                                  placeholder: "username",
                                  ref: 'username',
