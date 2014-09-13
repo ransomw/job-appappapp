@@ -1,6 +1,8 @@
 /*global define: false */
 /*global alert: false */
 
+/*jslint nomen: true */
+
 define([
     'react',
     'actions/ViewActions'
@@ -10,7 +12,7 @@ define([
     var LoginForm = React.createClass({
 
         _get_username: function () {
-            return this.refs['username'].getDOMNode().value.trim();
+            return this.refs.username.getDOMNode().value.trim();
         },
 
         on_login_click: function () {
