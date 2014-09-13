@@ -3,8 +3,8 @@
 /*global console: false */
 
 define([
-
-], function () {
+		'js/constants'
+], function (CONST) {
     "use strict";
 
     var signup = function (username) {
