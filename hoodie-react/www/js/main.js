@@ -14,7 +14,7 @@ require.config({
     ],
     shim: {
         'hoodie': {
-            deps: ['jquery'],
+            // deps: ['jquery'],
             exports: 'Hoodie'
         }
     }
@@ -23,13 +23,18 @@ require.config({
 /*global document: false */
 
 require([
+    'hoodie',
     'react',
     'components/CareerApp.react',
     'bower_components/requirejs-domready/domReady!'
-], function (React, CareerApp) {
+], function (Hoodie, React, CareerApp) {
     "use strict";
 
     console.log("top of main");
+
+    var hoodie = new Hoodie();
+    console.log("initialized hoodie");
+
     React.renderComponent(
         new CareerApp({key: 'CareerApp'}),
         document.getElementById('app')
