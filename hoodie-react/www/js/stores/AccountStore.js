@@ -18,6 +18,9 @@ define([
             {
 
                 add_app_change_listener: function (callback) {
+										if (_account_change_callback !== undefined) {
+												throw new Error("tried to define app account change listener twice");
+										}
                     _account_change_callback = callback;
                 },
 
@@ -48,8 +51,14 @@ define([
     dispatcher.register(function (payload) {
         switch (payload.action) {
         case 'signup':
+            alert("signup unimplemented");
+            console.log("but got username");
+            console.log(payload.data.username);
             break;
         case 'login':
+            alert("login unimplemented");
+            console.log("but got username");
+            console.log(payload.data.username);
             break;
         default:
             return false; // unhandled action

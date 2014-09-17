@@ -3,20 +3,23 @@
 /*global console: false */
 
 define([
-    'js/constants'
-], function (CONST) {
+    'js/constants',
+    'js/dispatcher'
+], function (CONST, dispatcher) {
     "use strict";
 
     var signup = function (username) {
-        alert("signup unimplemented");
-        console.log("but got username");
-        console.log(username);
+        dispatcher.dispatch({
+						action: 'signup',
+						'data': {username: username}
+				});
     },
 
         login = function (username) {
-            alert("login unimplemented");
-            console.log("but got username");
-            console.log(username);
+						dispatcher.dispatch({
+								action: 'login',
+								'data': {username: username}
+						});
         };
 
     return {
