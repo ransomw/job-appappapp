@@ -11,7 +11,6 @@ define([
     var _callbacks = [],
         _promises = [],
         Dispatcher = Object.create(
-            {'Dispatcher': null},
             {
                 register: function (callback) {
                     _callbacks.push(callback);

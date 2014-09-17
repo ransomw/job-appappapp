@@ -15,7 +15,6 @@ define([
         _account_change_callback,
 
         AccountStore = Object.create(
-            {'AccountStore': null},
             {
 
                 add_app_change_listener: function (callback) {
