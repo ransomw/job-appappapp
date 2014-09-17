@@ -1,6 +1,6 @@
 require.config({
     baseUrl: '',
-    // waitSeconds: 14,
+    waitSeconds: 30,
     paths: {
         'react': 'bower_components/react/react',
         'hoodie': '_api/_files/hoodie',
