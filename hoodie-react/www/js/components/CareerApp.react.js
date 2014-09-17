@@ -1,24 +1,31 @@
 /*global define: false */
 
 define([
-    'hoodie',
+    'js/stores/AccountStore',
     'react',
     'components/LoginForm.react'
-], function (Hoodie, React, LoginForm) {
+], function (AccountStore, React, LoginForm) {
     "use strict";
 
-    console.log("top of CareerApp module");
-    var hoodie = new Hoodie();
-    console.log("initialized hoodie");
-
     var get_app_state = function () {
+        var logged_in;
+
+        if (AccountStore.get_login_state() === undefined) {
+            logged_in = false;
+        } else {
+            logged_in = true;
+        }
+
         return {
-            logged_in: false
+            logged_in: logged_in
         };
     },
 
         CareerApp = React.createClass({
 
+            componentDidMount: function () {
+                AccountStore.add_app_change_listener(this._onAccountChange);
+            },
 
             getInitialState: function () {
                 return get_app_state();
@@ -31,7 +38,14 @@ define([
                     ]);
                 }
                 return React.DOM.h3(null, "logged in view unimplemented");
+            },
+
+            _onAccountChange: function () {
+                var logged_in_prev = this.state.logged_in,
+                    new_app_state = get_app_state();
+                this.setState(new_app_state);
             }
+
         });
 
     return CareerApp;

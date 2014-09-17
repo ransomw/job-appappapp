@@ -3,7 +3,7 @@
 /*jslint nomen: true */
 
 define([
-    'loadash',
+    'lodash',
     'when'
 ], function (_, when) {
     "use strict";

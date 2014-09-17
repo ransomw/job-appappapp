@@ -7,6 +7,9 @@ define([
 ], function (mhoodie, dispatcher) {
     "use strict";
 
+    console.log("top of AccountStore has dispatcher");
+    console.log(dispatcher);
+
     var _password = "password",
 
         _account_change_callback,
