@@ -3,7 +3,7 @@
 /*global console: false */
 
 define([
-		'js/constants'
+    'js/constants'
 ], function (CONST) {
     "use strict";
 
