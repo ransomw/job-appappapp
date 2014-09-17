@@ -3,8 +3,9 @@
 
 define([
     'js/stores/mhoodie',
-    'js/dispatcher'
-], function (mhoodie, dispatcher) {
+    'js/dispatcher',
+		'js/constants'
+], function (mhoodie, dispatcher, CONST) {
     "use strict";
 
     console.log("top of AccountStore has dispatcher");
@@ -50,12 +51,12 @@ define([
 
     dispatcher.register(function (payload) {
         switch (payload.action) {
-        case 'signup':
+        case CONST.action_type.signup:
             alert("signup unimplemented");
             console.log("but got username");
             console.log(payload.data.username);
             break;
-        case 'login':
+        case CONST.action_type.login:
             alert("login unimplemented");
             console.log("but got username");
             console.log(payload.data.username);

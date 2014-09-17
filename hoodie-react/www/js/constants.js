@@ -4,8 +4,8 @@ define([
     "use strict";
 
     var ACTION_TYPES = {
-        SIGNUP: 1,
-        LOGIN: 2
+        signup: 1,
+        login: 2
     };
 
     return {

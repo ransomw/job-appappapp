@@ -10,14 +10,14 @@ define([
 
     var signup = function (username) {
         dispatcher.dispatch({
-						action: 'signup',
+						action: CONST.action_type.signup,
 						'data': {username: username}
 				});
     },
 
         login = function (username) {
 						dispatcher.dispatch({
-								action: 'login',
+								action: CONST.action_type.login,
 								'data': {username: username}
 						});
         };
