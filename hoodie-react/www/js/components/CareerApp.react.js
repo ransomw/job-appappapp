@@ -1,10 +1,15 @@
 /*global define: false */
 
 define([
+    'hoodie',
     'react',
     'components/LoginForm.react'
-], function (React, LoginForm) {
+], function (Hoodie, React, LoginForm) {
     "use strict";
+
+    console.log("top of CareerApp module");
+    var hoodie = new Hoodie();
+    console.log("initialized hoodie");
 
     var get_app_state = function () {
         return {

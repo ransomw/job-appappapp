@@ -25,17 +25,13 @@ require.config({
 /*global document: false */
 
 require([
-    'hoodie',
     'react',
     'components/CareerApp.react',
     'bower_components/requirejs-domready/domReady!'
-], function (Hoodie, React, CareerApp) {
+], function (React, CareerApp) {
     "use strict";
 
     console.log("top of main");
-
-    var hoodie = new Hoodie();
-    console.log("initialized hoodie");
 
     React.renderComponent(
         new CareerApp({key: 'CareerApp'}),
