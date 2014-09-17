@@ -1,10 +1,12 @@
 require.config({
     baseUrl: '',
+    // waitSeconds: 14,
     paths: {
         'react': 'bower_components/react/react',
         'hoodie': '_api/_files/hoodie',
         'when': 'bower_components/when',
         'lodash': 'bower_components/lodash/dist/lodash.min',
+        'jquery': 'bower_components/jquery/dist/jquery.min',
 
         'components': 'js/components',
         'actions': 'js/actions'
@@ -14,7 +16,7 @@ require.config({
     ],
     shim: {
         'hoodie': {
-            // deps: ['jquery'],
+            deps: ['jquery'],
             exports: 'Hoodie'
         }
     }
