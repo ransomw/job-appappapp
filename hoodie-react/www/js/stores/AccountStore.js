@@ -44,17 +44,21 @@ define([
                     if (username === '') {
                         throw new Error("tried to sign up empty username");
                     }
-                    return mhoodie.account.signUp(username, _password);
+                    return mhoodie.account.signUp(username, _password)
+												.then(function (new_username) {
+														console.log("signed up for account with new username");
+														console.log(new_username);
+														return mhoodie.account.signIn(new_username, _password);
+												});
                 }
             }
         );
 
     dispatcher.register(function (payload) {
+				var p;
         switch (payload.action) {
         case CONST.action_type.signup:
-            alert("signup unimplemented");
-            console.log("but got username");
-            console.log(payload.data.username);
+						p = AccountStore.sign_up(payload.data.username);
             break;
         case CONST.action_type.login:
             alert("login unimplemented");
@@ -64,7 +68,13 @@ define([
         default:
             return false; // unhandled action
         }
-        _account_change_callback();
+				if (p) {
+						p.done(function () {
+								_account_change_callback();
+						});
+				} else {
+						_account_change_callback();
+				}
         return true; // handled action
     });
 
