@@ -44,7 +44,7 @@ define([
                 return React.DOM.div(null, [
                     new AccountStatus({key: 'AccountStatus',
                                        username: this.state.username}),
-                    React.DOM.h3(null, "logged in view unimplemented")
+                    React.DOM.h3({key: 'MainView'}, "logged in view unimplemented")
                     ]);
             },
 
