@@ -33,13 +33,6 @@ define([
                     return mhoodie.account.username;
                 },
 
-                log_in: function (username) {
-                    if (username === '') {
-                        throw new Error("tried to login empty username");
-                    }
-                    throw new Error("login unimplemented");
-                },
-
                 sign_up: function (username) {
                     if (username === '') {
                         throw new Error("tried to sign up empty username");
@@ -64,9 +57,7 @@ define([
             p = mhoodie.account.signOut();
             break;
         case CONST.action_type.login:
-            alert("login unimplemented");
-            console.log("but got username");
-            console.log(payload.data.username);
+            p = mhoodie.account.signIn(payload.data.username, _password);
             break;
         default:
             return false; // unhandled action
