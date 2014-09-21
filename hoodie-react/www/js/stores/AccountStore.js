@@ -60,6 +60,9 @@ define([
         case CONST.action_type.signup:
 						p = AccountStore.sign_up(payload.data.username);
             break;
+        case CONST.action_type.logout:
+            p = mhoodie.account.signOut();
+            break;
         case CONST.action_type.login:
             alert("login unimplemented");
             console.log("but got username");

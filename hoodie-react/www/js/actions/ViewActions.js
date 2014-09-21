@@ -20,11 +20,18 @@ define([
 								action: CONST.action_type.login,
 								'data': {username: username}
 						});
+        },
+
+        logout = function () {
+            dispatcher.dispatch({
+                action: CONST.action_type.logout
+            });
         };
 
     return {
         signup: signup,
-        login: login
+        login: login,
+        logout: logout
     };
 
 });

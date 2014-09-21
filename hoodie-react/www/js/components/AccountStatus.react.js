@@ -1,13 +1,22 @@
 /*global define: false */
 
 define([
-    'react'
-], function (React) {
+    'react',
+    'actions/ViewActions'
+], function (React, actions) {
     "use strict";
 
     var AccountStatus = React.createClass({
+
+        on_logout_click: function () {
+            actions.logout();
+        },
+
         render: function () {
-            return React.DOM.h3(null, "account status view unimplemented");
+            if (!this.props.username) {
+                throw new Error("AccountStatus component expects username to be defined");
+            }
+            return React.DOM.button({onClick: this.on_logout_click}, "logout");
         }
     });
 
