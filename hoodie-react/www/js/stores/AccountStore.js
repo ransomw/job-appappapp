@@ -29,7 +29,7 @@ define([
                  * return username of currently logged in user
                  * or undefined if noone is logged in
                  */
-                get_login_state: function () {
+                get_username: function () {
                     return mhoodie.account.username;
                 },
 

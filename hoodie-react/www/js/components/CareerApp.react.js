@@ -10,17 +10,9 @@ define([
     "use strict";
 
     var get_app_state = function () {
-        var logged_in,
-            username = AccountStore.get_login_state();
-
-        if (username === undefined) {
-            logged_in = false;
-        } else {
-            logged_in = true;
-        }
+        var username = AccountStore.get_username();
 
         return {
-            logged_in: logged_in,
             username: username
         };
     },
@@ -36,7 +28,7 @@ define([
             },
 
             render: function () {
-                if (!this.state.logged_in) {
+                if (!this.state.username) {
                     return React.DOM.div(null, [
                         new LoginForm({key: 'LoginForm'})
                     ]);
@@ -49,8 +41,7 @@ define([
             },
 
             _onAccountChange: function () {
-                var logged_in_prev = this.state.logged_in,
-                    new_app_state = get_app_state();
+                var new_app_state = get_app_state();
                 this.setState(new_app_state);
             }
 
