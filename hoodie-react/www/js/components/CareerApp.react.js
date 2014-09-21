@@ -3,9 +3,10 @@
 define([
     'js/stores/AccountStore',
     'react',
+    'js/dispatcher',
     'components/LoginForm.react',
     'components/AccountStatus.react'
-], function (AccountStore, React,
+], function (AccountStore, React, dispatcher,
              LoginForm, AccountStatus) {
     "use strict";
 
@@ -41,8 +42,11 @@ define([
             },
 
             _onAccountChange: function () {
-                var new_app_state = get_app_state();
-                this.setState(new_app_state);
+                var self = this;
+                dispatcher.wait_for([AccountStore.callback_idx], function () {
+                    var new_app_state = get_app_state();
+                    self.setState(new_app_state);
+                });
             }
 
         });

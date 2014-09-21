@@ -47,7 +47,7 @@ define([
             }
         );
 
-    dispatcher.register(function (payload) {
+    AccountStore.callback_idx = dispatcher.register(function (payload) {
 				var p;
         switch (payload.action) {
         case CONST.action_type.signup:
@@ -60,16 +60,10 @@ define([
             p = mhoodie.account.signIn(payload.data.username, _password);
             break;
         default:
-            return false; // unhandled action
+            p.resolve(false); // unhandled action
         }
-				if (p) {
-						p.done(function () {
-								_account_change_callback();
-						});
-				} else {
-						_account_change_callback();
-				}
-        return true; // handled action
+				_account_change_callback();
+        return p; // handled action
     });
 
 
