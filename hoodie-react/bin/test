@@ -4,7 +4,9 @@ var Mocha = require('mocha'),
     fs = require('fs'),
     path = require('path');
 
-var mocha = new Mocha;
+var mocha = new Mocha({
+    timeout: 5000
+});
 
 mocha.addFile(
     path.join('test', 'test.js')
