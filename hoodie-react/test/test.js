@@ -5,6 +5,22 @@ var environment = require('hoodie-server/lib/core/environment');
 var hconsole = require('hoodie-server/lib/utils/hconsole');
 var app = require('hoodie-server/lib');
 
+var requirejs = require('requirejs');
+
+requirejs.config({
+    baseUrl: 'http://localhost:6001/',
+    waitSeconds: 30,
+    paths: {
+        'hoodie': '_api/_files/hoodie',
+        'jquery': 'bower_components/jquery/dist/jquery.min'
+    },
+    shim: {
+        'hoodie': {
+            deps: ['jquery'],
+            exports: 'Hoodie'
+        }
+    }
+});
 
 describe('Array', function(){
   describe('#indexOf()', function(){
@@ -34,6 +50,15 @@ describe('login tests', function () {
             }
             // line break before logs
             console.log('');
+            var Hoodie;
+
+            requirejs([
+                'hoodie'
+            ], function (mHoodie) {
+                Hoodie = mHoodie;
+            });
+
+            debugger;
             done();
         });
 
