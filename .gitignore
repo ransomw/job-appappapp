@@ -10,3 +10,5 @@ hoodie-sand/data/
 hoodie-react/node_modules/
 hoodie-react/www/bower_components/
 hoodie-react/data/
+
+django-sand/career_app/db.sqlite3
