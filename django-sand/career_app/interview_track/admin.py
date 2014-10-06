@@ -10,13 +10,19 @@ from interview_track.models import (
 class CompanyAdmin(admin.ModelAdmin):
     fields = ['name', 'industry', 'recruiter']
 
+class ReadingInline(admin.StackedInline):
+    model = Reading
+    extra = 1
+
 class InterviewAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['company', 'date']}),
+        (None, {'fields': ['company', 'recruiter', 'date']}),
         ('notes', {'fields': ['notes'],
                    # 'classes': ['collapse'],
                }),
      ]
+    inlines = [ReadingInline]
+    list_display = ('company', 'date', 'assoc_recruiter')
 
 admin.site.register(Industry)
 admin.site.register(Recruiter)

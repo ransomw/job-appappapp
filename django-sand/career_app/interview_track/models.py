@@ -20,7 +20,7 @@ class Recruiter(models.Model):
 class Company(models.Model):
     industry = models.ForeignKey(Industry)
     name = models.CharField(max_length=100)
-    recruiter = models.ForeignKey(Recruiter, null=True)
+    recruiter = models.ForeignKey(Recruiter, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -33,10 +33,18 @@ class Company(models.Model):
                 "recruiter industry must match company industry")
 
 class Interview(models.Model):
-    company = models.ForeignKey(Company, null=True)
-    recruiter = models.ForeignKey(Recruiter, null=True)
+    company = models.ForeignKey(Company, null=True, blank=True)
+    recruiter = models.ForeignKey(Recruiter, null=True, blank=True)
     notes = models.TextField()
     date = models.DateField()
+
+    def assoc_recruiter(self):
+        if self.recruiter != None:
+            return self.recruiter
+        elif self.company.recruiter != None:
+            return self.company.recruiter
+        else:
+            return None
 
     def __unicode__(self):
         if self.company != None:
