@@ -45,6 +45,7 @@ class Interview(models.Model):
             return self.company.recruiter
         else:
             return None
+    assoc_recruiter.short_description = "Associated recruiter"
 
     def __unicode__(self):
         if self.company != None:

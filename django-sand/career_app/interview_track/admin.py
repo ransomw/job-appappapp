@@ -23,6 +23,8 @@ class InterviewAdmin(admin.ModelAdmin):
      ]
     inlines = [ReadingInline]
     list_display = ('company', 'date', 'assoc_recruiter')
+    list_filter = ['date', 'company']
+    search_fields = ['notes']
 
 admin.site.register(Industry)
 admin.site.register(Recruiter)
