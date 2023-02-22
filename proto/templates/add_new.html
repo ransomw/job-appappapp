@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<h1>add new job</h1>
+<form>
+    <div>
+        <label>title</label>
+        <input type="text" name="title">
+    </div>
+    <div>
+        <label>company</label>
+        <input type="text" name="company">
+    </div>
+    <div>
+        <label>description</label>
+        <textarea name="description" rows="5"></textarea>
+    </div>
+    <button>Submit</button>
+</form>
+{% endblock %}

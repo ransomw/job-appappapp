@@ -1,14 +1,7 @@
 *~
 *.pyc
 
-react-sand/bower_components/
+.venv/
+node_modules/
+dist/
 
-hoodie-sand/node_modules/
-hoodie-sand/www/bower_components/
-hoodie-sand/data/
-
-hoodie-react/node_modules/
-hoodie-react/www/bower_components/
-hoodie-react/data/
-
-django-sand/career_app/db.sqlite3
