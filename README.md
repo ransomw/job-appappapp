@@ -18,6 +18,8 @@ There are beginnings two web apps here:  "web 1.0" (i.e. -- mostly rendered on t
 
 ##### web 1.0
 
+`python proto/initdb.py`
+
 `python proto/app.py`
 
 and direct the browser to `localhost` at the port indicated in the log messages.

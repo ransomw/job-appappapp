@@ -2,7 +2,9 @@
 
 {% block content %}
 <h1>set job status</h1>
-<form>
+<h3>{{job.title}} - {{job.company}}</h3>
+<p>{{job.description}}</p>
+<form method="post">
     <div>
         <label>status</label>
         <select name="status">
@@ -15,6 +17,7 @@
             <option value="offer">offer letter</option>
         </select>
     </div>
+    <button>Submit</button>
 </form>
 {% endblock %}
 
