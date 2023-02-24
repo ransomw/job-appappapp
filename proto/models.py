@@ -2,9 +2,10 @@ import enum
 from sqlalchemy import create_engine
 from sqlalchemy import MetaData
 from sqlalchemy import Table, Column
-from sqlalchemy import Integer, String, Text, Enum
+from sqlalchemy import Integer, String, Text, Enum, ForeignKey
 from sqlalchemy import Engine, Connection, CursorResult
 from sqlalchemy import select, insert, update
+from sqlalchemy.engine.row import Row
 from flask import g
 from werkzeug.local import LocalProxy
 
@@ -28,6 +29,7 @@ job_table = Table(
     Column("description", Text),
     Column("status", Enum(Status))
 )
+
 
 # https://flask.palletsprojects.com/en/2.2.x/appcontext/#storing-data
 def get_engine() -> Engine:
@@ -70,7 +72,8 @@ def add_job(conn, form_info):
 def get_job_by_id(conn, job_id):
     sel_stmt = select(job_table).where(job_table.c.id == job_id)
     res: CursorResult = conn.execute(sel_stmt)
-    return res.fetchone()
+    row: Row = res.fetchone()
+    return row._asdict()
 
 
 def update_job(conn, job_id, form_info):
@@ -84,3 +87,11 @@ def update_job(conn, job_id, form_info):
     conn.execute(stmt)
     conn.commit()
 
+def set_job_status(conn, job_id, status):
+    stmt = update(job_table).where(
+        job_table.c.id == job_id
+    ).values(
+        status=status,
+    )
+    conn.execute(stmt)
+    conn.commit()

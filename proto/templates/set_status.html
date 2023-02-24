@@ -9,13 +9,14 @@
     <div>
         <label>status</label>
         <select name="status">
-            <option value="new">new</option>
-            <option value="applied">applied</option>
-            <option value="init-int">initial interviews</option>
-            <option value="tech-int">technical interviews</option>
-            <option value="add-int">additional interviews</option>
-            <option value="reject">rejected</option>
-            <option value="offer">offer letter</option>
+        {% for status in statuses %}
+        <option value="{{status.value}}"
+                {% if status.selected %}
+                selected="true"
+                {% endif %}>
+            {{status.view_string}}
+            </option>
+        {% endfor %}
         </select>
     </div>
     <button>Submit</button>

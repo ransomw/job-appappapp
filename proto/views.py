@@ -35,11 +35,34 @@ def edit_job_details(job_id):
         return render_template("edit_job_details.html", job=job)
 
 
-@crud_blueprint.route('/set-status/<int:job_id>')
+_STATUS_VIEW_STRINGS = {
+    models.Status.new: "new",
+    models.Status.applied: "applied",
+    models.Status.init_int: "initial interview",
+    models.Status.tech_int: "technical interview",
+    models.Status.add_int: "additional interviews",
+    models.Status.reject: "rejected",
+    models.Status.offer: "offer",
+}
+
+@crud_blueprint.route('/set-status/<int:job_id>', methods=['GET', 'POST'])
 def set_application_status(job_id):
     db_conn = models.get_db()
-    job = models.get_job_by_id(db_conn, job_id)
-    return render_template("set_status.html", job=job)
+    if request.method == 'POST':
+        status = models.Status(int(request.form['status']))
+        models.set_job_status(db_conn, job_id, status)
+        return redirect(url_for('.list_jobs'))
+    else:
+        job = models.get_job_by_id(db_conn, job_id)
+        statuses = [{
+            "view_string": _STATUS_VIEW_STRINGS[status],
+            "value": status.value,
+            "selected": job['status'] == status,
+        } for status in _STATUS_VIEW_STRINGS.keys()]
+        return render_template("set_status.html", 
+                            job=job,
+                            statuses=statuses,
+                            )
 
 
 
