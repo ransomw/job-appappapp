@@ -24,6 +24,17 @@ def add_new_job():
         return render_template("add_new.html")
 
 
+@crud_blueprint.route('/edit/<int:job_id>', methods=['GET', 'POST'])
+def edit_job_details(job_id):
+    db_conn = models.get_db()
+    if request.method == 'POST':
+        models.update_job(db_conn, job_id, request.form)
+        return redirect(url_for('.list_jobs'))
+    else:
+        job = models.get_job_by_id(db_conn, job_id)
+        return render_template("edit_job_details.html", job=job)
+
+
 @crud_blueprint.route('/set-status/<int:job_id>')
 def set_application_status(job_id):
     db_conn = models.get_db()

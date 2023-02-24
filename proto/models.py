@@ -4,7 +4,7 @@ from sqlalchemy import MetaData
 from sqlalchemy import Table, Column
 from sqlalchemy import Integer, String, Text, Enum
 from sqlalchemy import Engine, Connection, CursorResult
-from sqlalchemy import select, insert
+from sqlalchemy import select, insert, update
 from flask import g
 from werkzeug.local import LocalProxy
 
@@ -71,3 +71,16 @@ def get_job_by_id(conn, job_id):
     sel_stmt = select(job_table).where(job_table.c.id == job_id)
     res: CursorResult = conn.execute(sel_stmt)
     return res.fetchone()
+
+
+def update_job(conn, job_id, form_info):
+    stmt = update(job_table).where(
+        job_table.c.id == job_id
+    ).values(
+        title=form_info['title'],
+        company=form_info['company'],
+        description=form_info['description'],        
+    )
+    conn.execute(stmt)
+    conn.commit()
+
