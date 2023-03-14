@@ -1,0 +1,6 @@
+pymongo
+selenium
+beautifulsoup4
+click
+Flask
+requests

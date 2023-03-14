@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Module detail</h1>
+<h3>{{module.module_name}}</h3>
+<p>{{module.description}}</p>
+<p>{{module.detail}}</p>
+<p><a href="{{BASE_URL+module.link}}">doc</a></p>
+{% endblock %}

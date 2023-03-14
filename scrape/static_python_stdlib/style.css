@@ -1,0 +1,16 @@
+h1 {
+    text-align: center;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 2rem;
+}
+
+ul li {
+    margin-bottom: .5em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
