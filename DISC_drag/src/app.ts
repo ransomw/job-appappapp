@@ -55,18 +55,24 @@ type Listener<T> = (items : T[]) => void;
 class State<T> {
     protected listeners : Listener<T>[] = [];
 
+    constructor(protected items: T[]) {}
+
     addListener(listenerFn : Listener<T>) {
         this.listeners.push(listenerFn);
+    }
+
+    protected updateListeners() {
+        for (const listenerFn of this.listeners) {
+            listenerFn(this.items.slice());
+        }
     }
 }
 
 class TraitState extends State<Trait> {
-    private traits : Trait[];
     private static instance : TraitState;
 
     private constructor() {
-        super();
-        this.traits = init_traits();
+        super(init_traits());
     }
 
     static getInstance() {
@@ -78,7 +84,7 @@ class TraitState extends State<Trait> {
     }
 
     rankTrait(id: string, rank: Rank) {
-        const trait = this.traits.find(trait => trait.id == id);
+        const trait = this.items.find(trait => trait.id == id);
         if (trait) {
             trait.is_decided = true;
             trait.rank = rank;
@@ -90,11 +96,6 @@ class TraitState extends State<Trait> {
         this.updateListeners();
     }
 
-    private updateListeners() {
-        for (const listenerFn of this.listeners) {
-            listenerFn(this.traits.slice());
-        }
-    }
 }
 
 const traitState = TraitState.getInstance();
@@ -160,8 +161,9 @@ implements Draggable{
         event.dataTransfer!.effectAllowed = 'move';
     }
 
-    dragEndHandler(_: DragEvent)  {
-        console.log('DragEnd');
+    @Autobind
+    dragEndHandler(event: DragEvent)  {
+        event.preventDefault();
     }
 
     configure() {
@@ -202,7 +204,7 @@ implements DragTarget{
 
     @Autobind
     dragLeaveHandler(event: DragEvent) {
-
+        event.preventDefault();
     }
 
     configure() {
