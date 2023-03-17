@@ -1,0 +1,17 @@
+h2 {
+    font-size: 1rem;
+}
+
+#app {
+    display: flex;
+    justify-content: space-around;
+}
+
+ul {
+    list-style: none;
+    width: 5rem;
+}
+
+li {
+    border: solid 1px black;
+}
