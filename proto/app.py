@@ -28,5 +28,6 @@ if __name__ == '__main__':
         5000,
         app,
         use_debugger=True,
+        use_reloader=True,
     )
 

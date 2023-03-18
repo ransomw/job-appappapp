@@ -1,8 +1,9 @@
 import enum
+import datetime
 from sqlalchemy import create_engine
 from sqlalchemy import MetaData
 from sqlalchemy import Table, Column
-from sqlalchemy import Integer, String, Text, Enum, ForeignKey
+from sqlalchemy import Integer, String, Text, Enum, ForeignKey, DateTime
 from sqlalchemy import Engine, Connection, CursorResult
 from sqlalchemy import select, insert, update
 from sqlalchemy.engine.row import Row
@@ -27,9 +28,20 @@ job_table = Table(
     Column("title", String(100)),
     Column("company", String),
     Column("description", Text),
-    Column("status", Enum(Status))
+    Column("status", Enum(Status)),
 )
 
+status_history_table = Table(
+    "status_history",
+    metadata_obj,
+    Column("id", Integer, primary_key=True),
+    Column("job_id", Integer,
+           ForeignKey(job_table.c.id, ondelete='CASCADE'),
+           nullable=False,
+           ),
+    Column("status", Enum(Status)),
+    Column("datetime", DateTime),
+)
 
 # https://flask.palletsprojects.com/en/2.2.x/appcontext/#storing-data
 def get_engine() -> Engine:
@@ -59,13 +71,19 @@ def list_jobs(conn):
 
 
 def add_job(conn, form_info):
-    stmt = insert(job_table).values(
+    stmt_job = insert(job_table).values(
         title=form_info['title'],
         company=form_info['company'],
         description=form_info['description'],
         status=Status.new,
+    ).returning(job_table.c.id)
+    res_job = conn.execute(stmt_job).fetchone()
+    stmt_status = insert(status_history_table).values(
+        job_id=res_job.id,
+        status=Status.new,
+        datetime=datetime.datetime.utcnow(),
     )
-    conn.execute(stmt)
+    conn.execute(stmt_status)
     conn.commit()
 
 
