@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>list of jobs</h1>
+<table>
+<thead>
+<tr>
+    <th>date</th>
+    <th>title</th>
+    <th>company</th>
+    <th>location</th>
+    <th>search term</th>
+</tr>
+</thead>
+<tbody>
+{% for job in jobs %}
+<tr>
+    <td>{{job.date}}</td>
+    <td>
+    <a href="{{url_for('jobs.job_detail', job_id=job._id)}}">
+        {{job.job_title}}
+    </a>
+    </td>
+    <td>{{job.company}}</td>
+    <td>{{job.location}}</td>
+    <td>{{job.search_term}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
+
+<!--
+      {
+    _id: ObjectId("6415dd517fef7c6a871d7500"),
+    date: '03-15-2023',
+    job_title: 'Lead Software Engineer (Cloud Developer)',
+    company: 'Freshworks',
+    vc: 'Accel',
+    location: 'Chennai, INTamil Nadu, IN',
+    jobid: '2430246',
+    search_term: 'argo'
+  }
+
+-->

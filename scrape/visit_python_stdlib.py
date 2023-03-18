@@ -1,14 +1,23 @@
+from gevent import monkey
+# monkey.patch_socket()
+monkey.patch_all()
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 from pymongo import MongoClient
+from pymongo.database import Database
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
 import click
 import flask
 import werkzeug
 import requests
+import gevent
+
+MONGO_HOST = 'localhost'
+MONGO_PORT = 27027
 
 chrome_options = webdriver.ChromeOptions() 
 chrome_options.add_argument("--remote-debugging-port=9222")
@@ -60,7 +69,9 @@ def scrape_modules():
     return index_soup_to_modules(soup)
 
 
-def scrape_detail(link):
+def scrape_detail(link, verbose=False):
+    if verbose:
+        print("scraping "+link)
     res = requests.get(BASE_URL+link)
     soup = BeautifulSoup(res.text, 'html.parser')
     hr_el = soup.find('hr', class_="docutils")
@@ -73,8 +84,8 @@ def scrape_detail(link):
 
 
 def _get_db() -> Collection:
-    mclient = MongoClient('localhost', 27027)
-    mdb = mclient.wd_scrape
+    mclient = MongoClient(MONGO_HOST, MONGO_PORT)
+    mdb: Database = mclient.wd_scrape
     mcoll: Collection = mdb.python_stdlib
     return mcoll
 
@@ -121,16 +132,32 @@ def populate_db():
             mcoll.insert_one(module)
 
 @cli.command()
-def add_db_details():
+@click.option("--parallel", type=click.Choice(['none', 'gevent', 'aio']), default='none')
+def add_db_details(parallel):
     mcoll = _get_db()
     qres = mcoll.find({"detail": {"$exists": False}})
-    for db_item in qres:
-        print("scraping "+db_item["module_name"])
-        detail = scrape_detail(db_item['link'])
-        if detail is None:
-            continue
-        mcoll.update_one({"_id": db_item["_id"]},
-                         {"$set": {"detail": detail}})
+    start = time.time()
+    if parallel == 'none':
+        for db_item in qres:
+            print("scraping "+db_item["module_name"])
+            detail = scrape_detail(db_item['link'])
+            if detail is None:
+                continue
+            mcoll.update_one({"_id": db_item["_id"]},
+                            {"$set": {"detail": detail}})
+    elif parallel == 'gevent':
+        qres_list = list(qres)
+        detail_glets = [gevent.spawn(scrape_detail, db_item['link'], verbose=True) 
+                        for db_item in qres_list]
+        gevent.joinall(detail_glets)
+        for db_item, glet in zip(qres_list, detail_glets):
+            if glet.value is None:
+                continue
+            mcoll.update_one({"_id": db_item["_id"]},
+                            {"$set": {"detail": glet.value}})
+    elif parallel == 'aio':
+        raise NotImplementedError()
+    print("total time {:.2f}".format(time.time() - start))
 
 @cli.command()
 def run_app():
