@@ -5,3 +5,4 @@ click
 Flask
 requests
 gevent
+aiohttp

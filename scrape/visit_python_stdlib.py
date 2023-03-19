@@ -15,6 +15,8 @@ import flask
 import werkzeug
 import requests
 import gevent
+import aiohttp
+import asyncio
 
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27027
@@ -69,11 +71,8 @@ def scrape_modules():
     return index_soup_to_modules(soup)
 
 
-def scrape_detail(link, verbose=False):
-    if verbose:
-        print("scraping "+link)
-    res = requests.get(BASE_URL+link)
-    soup = BeautifulSoup(res.text, 'html.parser')
+def _parse_detail_page_text_to_str(page_text):
+    soup = BeautifulSoup(page_text, 'html.parser')
     hr_el = soup.find('hr', class_="docutils")
     if hr_el is None:
         return None
@@ -82,6 +81,29 @@ def scrape_detail(link, verbose=False):
         return None
     return p_el.text
 
+
+def scrape_detail(link, verbose=False):
+    if verbose:
+        print("scraping "+link)
+    res = requests.get(BASE_URL+link)
+    return _parse_detail_page_text_to_str(res.text)
+
+
+async def scrape_detail_aio(link, verbose=False):
+    async with aiohttp.ClientSession() as session:
+        if verbose:
+            print("scraping "+link)
+        async with session.get(BASE_URL+link) as resp:
+            page_text = await resp.text()
+            if verbose:
+                print("downloaded page at "+link)
+    return _parse_detail_page_text_to_str(page_text)
+
+
+async def scrape_details_aio(links, verbose=False):
+    coros = [scrape_detail_aio(link, verbose=verbose) for link in links]
+    details = await asyncio.gather(*coros)
+    return details
 
 def _get_db() -> Collection:
     mclient = MongoClient(MONGO_HOST, MONGO_PORT)
@@ -156,7 +178,14 @@ def add_db_details(parallel):
             mcoll.update_one({"_id": db_item["_id"]},
                             {"$set": {"detail": glet.value}})
     elif parallel == 'aio':
-        raise NotImplementedError()
+        qres_list = list(qres)
+        links = [db_item['link'] for db_item in qres_list]
+        details = asyncio.run(scrape_details_aio(links, verbose=True))
+        for db_item, detail in zip(qres_list, details):
+            if detail is None:
+                continue
+            mcoll.update_one({"_id": db_item["_id"]},
+                            {"$set": {"detail": detail}})            
     print("total time {:.2f}".format(time.time() - start))
 
 @cli.command()
