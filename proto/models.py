@@ -113,10 +113,11 @@ def add_contact(conn, form_info):
         intro_id=(None if form_info['intro_id'] == 'none' else int(form_info['intro_id']))
     )
     conn.execute(stmt_contact)
+    conn.commit()
 
 
 def update_contact(conn, contact_id, form_info):
-    stmt = update(job_table).where(
+    stmt = update(contact_table).where(
         contact_table.c.id == contact_id
     ).values(
         name=form_info['name'],

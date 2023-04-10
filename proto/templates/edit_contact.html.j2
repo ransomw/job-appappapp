@@ -27,16 +27,18 @@
         <label>introduced by</label>
         <select name="intro_id">
         <option value="none"
-                {% if contact.id_1 is None %}
+                {% if contact.id_1 is none %}
                 selected="true"
                 {% endif %}>none</option>
         {% for other_contact in contacts %}
+        {% if other_contact.id != contact.id %}
         <option value="{{contact.id}}"
                 {% if other_contact.id == contact.id_1 %}
                 selected="true"
                 {% endif %}>
-            {{contact.name}}
+            {{other_contact.name}}
         </option>
+        {% endif %}
         {% endfor %}
         </select>
     </div>
