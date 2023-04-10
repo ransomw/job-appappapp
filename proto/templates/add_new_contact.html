@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>add new contact</h1>
+<form method="post">
+    <div>
+        <label>name</label>
+        <input type="text" name="name">
+    </div>
+    <div>
+        <label>company</label>
+        <input type="text" name="company">
+    </div>
+    <div>
+        <label>email</label>
+        <input type="text" name="email">
+    </div>
+    <div>
+        <label>phone</label>
+        <input type="text" name="phone">
+    </div>
+    <div>
+        <label>notes</label>
+        <textarea name="notes" rows="5"></textarea>
+    </div>
+    <div>
+        <label>introduced by</label>
+        <select name="intro_id">
+        <option value="none"
+                selected="true">none</option>
+        {% for contact in contacts %}
+        <option value="{{contact.id}}">
+            {{contact.name}}
+        </option>
+        {% endfor %}
+        </select>
+    </div>
+    <button>Submit</button>
+</form>
+{% endblock %}

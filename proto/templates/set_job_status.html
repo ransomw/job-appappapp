@@ -4,7 +4,7 @@
 <h1>set job status</h1>
 <h3>{{job.title}} - {{job.company}}</h3>
 <p>{{job.description}}</p>
-<a href="{{url_for('crud.edit_job_details', job_id=job.id)}}">edit</a>
+<a href="{{url_for('crud.edit_job', job_id=job.id)}}">edit</a>
 <form method="post">
     <div>
         <label>status</label>

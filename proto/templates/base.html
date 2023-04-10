@@ -11,10 +11,16 @@
     <nav>
         <ul>
             <li>
-                <a href="{{url_for('crud.list_jobs')}}">list</a>
+                <a href="{{url_for('crud.list_jobs')}}">list jobs</a>
             </li>
             <li>
-                <a href="{{url_for('crud.add_new_job')}}">new</a>
+                <a href="{{url_for('crud.add_new_job')}}">new job listing</a>
+            </li>
+            <li>
+              <a href="{{url_for('crud.list_contacts')}}">list contacts</a>
+            </li>
+            <li>
+                <a href="{{url_for('crud.add_new_contact')}}">new contact</a>
             </li>
             <li>
                 <a href="{{url_for('viz.viz_root')}}">data visualization</a>

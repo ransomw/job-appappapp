@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>edit contact</h1>
+<form method="post">
+    <div>
+        <label>name</label>
+        <input type="text" name="name" value="{{contact.name}}">
+    </div>
+    <div>
+        <label>company</label>
+        <input type="text" name="company" value="{{contact.company}}">
+    </div>
+    <div>
+        <label>email</label>
+        <input type="text" name="email" value="{{contact.email}}">
+    </div>
+    <div>
+        <label>phone</label>
+        <input type="text" name="phone" value="{{contact.phone}}">
+    </div>
+    <div>
+        <label>notes</label>
+        <textarea name="notes" rows="5">{{contact.notes}}</textarea>
+    </div>
+    <div>
+        <label>introduced by</label>
+        <select name="intro_id">
+        <option value="none"
+                {% if contact.id_1 is None %}
+                selected="true"
+                {% endif %}>none</option>
+        {% for other_contact in contacts %}
+        <option value="{{contact.id}}"
+                {% if other_contact.id == contact.id_1 %}
+                selected="true"
+                {% endif %}>
+            {{contact.name}}
+        </option>
+        {% endfor %}
+        </select>
+    </div>
+    <button>Submit</button>
+</form>
+{% endblock %}

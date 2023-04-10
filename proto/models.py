@@ -1,3 +1,4 @@
+import os
 import enum
 import datetime
 from sqlalchemy import create_engine
@@ -9,6 +10,8 @@ from sqlalchemy import select, insert, update
 from sqlalchemy.engine.row import Row
 from flask import g
 from werkzeug.local import LocalProxy
+
+SA_DB_URI = os.environ.get('PROTO_DATABASE', "sqlite:///" + "proto.db")
 
 metadata_obj = MetaData()
 
@@ -40,16 +43,30 @@ status_history_table = Table(
            nullable=False,
            ),
     Column("status", Enum(Status)),
-    Column("datetime", DateTime),
+    Column("datetime", DateTime, default=datetime.datetime.utcnow),
+)
+
+contact_table = Table(
+    "contact",
+    metadata_obj,
+    Column("id", Integer, primary_key=True),
+    Column("name", String(100)),
+    Column("company", String),
+    Column("email", String(120)),
+    Column("phone", String(30)),
+    Column("notes", Text),
+    Column("intro_id", Integer, ForeignKey('contact.id')),
 )
 
 # https://flask.palletsprojects.com/en/2.2.x/appcontext/#storing-data
 def get_engine() -> Engine:
-    return create_engine("sqlite:///" + "proto.db", echo=False)
+    return create_engine(SA_DB_URI, echo=False)
 
 
 def connect_db() -> Connection:
     engine = get_engine()
+    # The sole purpose of the Engine object from a user-facing perspective 
+    # is to provide a unit of connectivity to the database called the Connection.
     conn: Connection = engine.connect()
     return conn
 
@@ -62,6 +79,56 @@ def get_db():
 # db = LocalProxy(get_db)
 
 ###
+
+def get_contact_by_id(conn, contact_id):
+    contact_alias_1 = contact_table.alias()
+    sel_stmt = select(contact_table, 
+                      contact_alias_1.c.id, contact_alias_1.c.name).outerjoin(
+                        contact_alias_1,
+                        contact_alias_1.c.id == contact_table.c.intro_id
+                      ).where(contact_table.c.id == contact_id)
+    res: CursorResult = conn.execute(sel_stmt)
+    row: Row = res.fetchone()
+    return row._asdict()
+
+
+def list_contacts(conn):
+    contact_alias_1 = contact_table.alias()
+    sel_stmt = select(contact_table, 
+                  contact_alias_1.c.id, contact_alias_1.c.name).outerjoin(
+    contact_alias_1,
+    contact_alias_1.c.id == contact_table.c.intro_id)
+    res = conn.execute(sel_stmt)
+    rows = res.mappings().all()
+    return rows
+
+
+def add_contact(conn, form_info):
+    stmt_contact = insert(contact_table).values(
+        name=form_info['name'],
+        company=form_info['company'],
+        email=form_info['email'],
+        phone=form_info['phone'],
+        notes=form_info['notes'],
+        intro_id=(None if form_info['intro_id'] == 'none' else int(form_info['intro_id']))
+    )
+    conn.execute(stmt_contact)
+
+
+def update_contact(conn, contact_id, form_info):
+    stmt = update(job_table).where(
+        contact_table.c.id == contact_id
+    ).values(
+        name=form_info['name'],
+        company=form_info['company'],
+        email=form_info['email'],
+        phone=form_info['phone'],
+        notes=form_info['notes'],
+        intro_id=(None if form_info['intro_id'] == 'none' else int(form_info['intro_id']))
+    )
+    conn.execute(stmt)
+    conn.commit()
+
 
 def list_jobs(conn):
     sel_stmt = select(job_table)
