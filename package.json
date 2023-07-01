@@ -5,8 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve",
-    "build": "webpack"
+    "start": "BUILD=dev webpack serve",
+    "build": "BUILD=dev webpack",
+    "build:prod": "BUILD=prod webpack --config webpack.prod.config.js"
   },
   "author": "Ransom Williams",
   "license": "MIT",

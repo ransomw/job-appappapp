@@ -6,7 +6,7 @@ module.exports = {
     entry: './src/app.ts',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'srv_static', 'js'),
         publicPath: '/dist/'
     },
     devtool: 'inline-source-map',
@@ -24,19 +24,8 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            BUILD_ENV: JSON.stringify('dev')
+            BUILD_ENV: JSON.stringify('prod')
         })
-    ],
-    devServer: {
-        static: {
-            directory: path.join(__dirname, '/')
-        },
-        proxy: {
-            '/api': {
-                target: 'http://localhost:5000',
-                pathRewrite: { '^/api': '' },
-            },
-        }
-    }
+    ]
 };
 

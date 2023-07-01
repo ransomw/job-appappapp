@@ -6,3 +6,6 @@ node_modules/
 dist/
 
 *.db
+
+srv_static/js/bundle.js
+
