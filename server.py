@@ -2,6 +2,24 @@ import werkzeug
 import flask
 from flask import jsonify
 from flask import render_template
+import graphene
+from flask_graphql import GraphQLView
+
+class Query(graphene.ObjectType):
+    # this defines a Field `hello` in our Schema with a single Argument `first_name`
+    # By default, the argument name will automatically be camel-based into firstName in the generated schema
+    hello = graphene.String(first_name=graphene.String(default_value="stranger"))
+    goodbye = graphene.String()
+
+    # our Resolver method takes the GraphQL context (root, info) as well as
+    # Argument (first_name) for the Field and returns data for the query Response
+    def resolve_hello(root, info, first_name):
+        return f'Hello {first_name}!'
+
+    def resolve_goodbye(root, info):
+        return 'See ya!'
+
+schema = graphene.Schema(query=Query)
 
 
 app = flask.Flask(__name__, template_folder='srv_templates', static_folder='srv_static')
@@ -13,6 +31,15 @@ def home():
 @app.route("/hello")
 def hello_world():
     return jsonify({"message": "hello from flask"})
+
+app.add_url_rule(
+    "/graphql",
+    view_func=GraphQLView.as_view(
+        'graphql',
+        schema=schema,
+        graphiql=True,
+    )
+)
 
 werkzeug.serving.run_simple(
     "0.0.0.0",
