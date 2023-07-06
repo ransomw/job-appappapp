@@ -9,3 +9,5 @@ dist/
 
 srv_static/js/bundle.js
 
+schema.graphql
+src/__generated__
