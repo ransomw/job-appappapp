@@ -13,7 +13,6 @@ class Query(graphene.ObjectType):
     # By default, the argument name will automatically be camel-based into firstName in the generated schema
     hello = graphene.String(first_name=graphene.String(default_value="stranger"))
     goodbye = graphene.String()
-    whatup = graphene.String()
 
     # our Resolver method takes the GraphQL context (root, info) as well as
     # Argument (first_name) for the Field and returns data for the query Response
