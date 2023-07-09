@@ -7,12 +7,83 @@ from flask_graphql import GraphQLView
 from graphql.utils import schema_printer
 import click
 
+TODOS = []
+NEXT_TODO_ID = 0
+
+class Todo(graphene.ObjectType):
+    text = graphene.String()
+    id = graphene.Int()
+
+class CreateTodo(graphene.Mutation):
+    class Arguments:
+        text = graphene.String()
+
+    todo = graphene.Field(lambda: Todo)
+
+    def mutate(root, info, text):
+        global NEXT_TODO_ID
+        todo = Todo(text=text, id=NEXT_TODO_ID)
+        NEXT_TODO_ID += 1
+        TODOS.append(todo)
+        return CreateTodo(todo=todo)
+
+
+class MyMutations(graphene.ObjectType):
+    create_todo = CreateTodo.Field()
+
+
+class Episode(graphene.Enum):
+    NEWHOPE = 4
+    EMPIRE = 5
+    JEDI = 6
+
+
+class Character(graphene.ObjectType):
+    name = graphene.String()
+    appears_in = graphene.NonNull(graphene.List(graphene.NonNull(graphene.String)))
+
+    def resolve_name(parent, info):
+        return parent['name']
+    
+    def resolve_appears_in(parent, info):
+        return parent['appears_in']
+
+
+HERO_R2D2 = {"name": "R2-D2", "appears_in": [
+            "NEWHOPE",
+            "EMPIRE",
+            "JEDI",
+        ]}
+HERO_LUKE = {"name": "Luke Skywalker", "appears_in": [
+            "NEWHOPE",
+            "EMPIRE",
+            "JEDI",   
+]}
 
 class Query(graphene.ObjectType):
     # this defines a Field `hello` in our Schema with a single Argument `first_name`
     # By default, the argument name will automatically be camel-based into firstName in the generated schema
     hello = graphene.String(first_name=graphene.String(default_value="stranger"))
     goodbye = graphene.String()
+
+    hero = graphene.Field(Character, 
+                           episode=graphene.Argument(Episode,
+# uncommenting the default_value line produces an error in the gql-schema command
+# https://github.com/graphql-python/graphene/issues/1293
+                                                    # default_value=Episode.JEDI
+                                                    ))
+
+    todos = graphene.List(Todo)
+
+    def resolve_todos(root, info):
+        return TODOS
+
+    def resolve_hero(root, info, 
+                    #  episode
+                     ):
+        # if episode == Episode.EMPIRE:
+        #     return HERO_LUKE
+        return HERO_R2D2
 
     # our Resolver method takes the GraphQL context (root, info) as well as
     # Argument (first_name) for the Field and returns data for the query Response
@@ -22,7 +93,10 @@ class Query(graphene.ObjectType):
     def resolve_goodbye(root, info):
         return 'See ya!'
 
-schema = graphene.Schema(query=Query)
+schema = graphene.Schema(
+    query=Query, 
+    mutation=MyMutations
+    )
 
 
 app = flask.Flask(__name__, template_folder='srv_templates', static_folder='srv_static')
