@@ -3,8 +3,8 @@ import flask
 from flask import jsonify
 from flask import render_template
 import graphene
-from flask_graphql import GraphQLView
-from graphql.utils import schema_printer
+from graphql_server.flask.graphqlview import GraphQLView
+from graphql.utilities import print_schema
 import click
 
 TODOS = []
@@ -70,7 +70,7 @@ class Query(graphene.ObjectType):
                            episode=graphene.Argument(Episode,
 # uncommenting the default_value line produces an error in the gql-schema command
 # https://github.com/graphql-python/graphene/issues/1293
-                                                    # default_value=Episode.JEDI
+                                                    default_value=Episode.JEDI
                                                     ))
 
     todos = graphene.List(Todo)
@@ -79,10 +79,10 @@ class Query(graphene.ObjectType):
         return TODOS
 
     def resolve_hero(root, info, 
-                    #  episode
+                     episode
                      ):
-        # if episode == Episode.EMPIRE:
-        #     return HERO_LUKE
+        if episode == Episode.EMPIRE:
+            return HERO_LUKE
         return HERO_R2D2
 
     # our Resolver method takes the GraphQL context (root, info) as well as
@@ -125,7 +125,7 @@ def cli():
 
 @cli.command()
 def gql_schema():
-    my_schema_str = schema_printer.print_schema(schema)
+    my_schema_str = print_schema(schema.graphql_schema)
     with open("schema.graphql", "w") as fp:
         fp.write(my_schema_str)
         fp.close()
