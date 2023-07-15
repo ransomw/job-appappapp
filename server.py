@@ -7,8 +7,8 @@ from graphql_server.flask.graphqlview import GraphQLView
 from graphql.utilities import print_schema
 import click
 
-TODOS = []
-NEXT_TODO_ID = 0
+_todos = []
+_next_todo_id = 0
 
 class Todo(graphene.ObjectType):
     text = graphene.String()
@@ -21,10 +21,10 @@ class CreateTodo(graphene.Mutation):
     todo = graphene.Field(lambda: Todo)
 
     def mutate(root, info, text):
-        global NEXT_TODO_ID
-        todo = Todo(text=text, id=NEXT_TODO_ID)
-        NEXT_TODO_ID += 1
-        TODOS.append(todo)
+        global _next_todo_id
+        todo = Todo(text=text, id=_next_todo_id)
+        _next_todo_id += 1
+        _todos.append(todo)
         return CreateTodo(todo=todo)
 
 
@@ -76,7 +76,7 @@ class Query(graphene.ObjectType):
     todos = graphene.List(Todo)
 
     def resolve_todos(root, info):
-        return TODOS
+        return _todos
 
     def resolve_hero(root, info, 
                      episode
