@@ -26,10 +26,26 @@ class CreateTodo(graphene.Mutation):
         _next_todo_id += 1
         _todos.append(todo)
         return CreateTodo(todo=todo)
+    
+
+class DeleteTodo(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int()
+
+    ok = graphene.Boolean()
+
+    def mutate(root, info, id):
+        global _todos
+        if id not in [todo.id for todo in _todos]:
+            # todo: is this the GQL way to pass exceptions?  try out in graphiql
+            raise Exception("no todo with id "+str(id))
+        _todos = [todo for todo in _todos if todo.id != id]
+        return DeleteTodo(ok=True)
 
 
 class MyMutations(graphene.ObjectType):
     create_todo = CreateTodo.Field()
+    delete_todo = DeleteTodo.Field()
 
 
 class Episode(graphene.Enum):

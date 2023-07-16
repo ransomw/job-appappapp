@@ -29,9 +29,19 @@ const ADD_TEXT_TODO_MUTATION_STR = /* GraphQL */ `
   }
 `;
 
+const DELETE_TEXT_TODO_MUTATION_STR = /* GraphQL */ `
+  mutation DeleteTodo($id: Int!) {
+    deleteTodo(id: $id) {
+        ok
+    }
+  }
+`;
+
+// todo: disable button when input empty
 const GqlMutationInput: React.FC = () => {
     const [todo_text, set_todo_text] = useState('');
 
+    // todo: use generated gql function rather than apollo client import?
     const add_todo_mutation : DocumentNode = gqlClient(ADD_TEXT_TODO_MUTATION_STR) as DocumentNode;
  
     const [add_todo, { data, loading, error }] = useMutation(add_todo_mutation, {
@@ -49,8 +59,6 @@ const GqlMutationInput: React.FC = () => {
     };
 
     const on_button_click = (event: MouseEvent<HTMLButtonElement>) => {
-        console.log(todo_text);
-
         add_todo({ variables: { text: todo_text } });
         set_todo_text('');
     };
@@ -76,6 +84,29 @@ query TextTodosQuery {
 }
 `;
 
+type TextTodo = {
+    text: String,
+    id: number,
+};
+
+const TodoListItem: React.FC<{todo: TextTodo}> = ({todo}) => {
+    const delete_todo_mutation : DocumentNode = gql(DELETE_TEXT_TODO_MUTATION_STR) as DocumentNode;
+
+    const [delete_todo, {data, loading, error}] = useMutation(delete_todo_mutation, {
+        refetchQueries: [
+            'TextTodosQuery'
+        ]
+    });
+
+    const handle_delete_click = (event : MouseEvent<HTMLButtonElement>) => {
+        delete_todo({variables: {id: todo.id}});
+    };
+    return (<li>
+        <span>{todo.text}</span>
+        <button onClick={handle_delete_click}>delete</button>
+        </li>);
+};
+
 const TextOnlyTodoList: React.FC = () => {
     const text_todos_query : DocumentNode = gql(TEXT_TODOS_QUERY_STR) as DocumentNode;
     const {loading, data} = useQuery(text_todos_query);
@@ -86,8 +117,8 @@ const TextOnlyTodoList: React.FC = () => {
 
     const todo_list_items = data.todos.map(
         // todo: get type inference out of gql schema if possible?
-        (todo: {text: String, id: number}) => (<li key={todo.id}>{todo.text}</li>)
-        );
+        (todo: TextTodo) => (<TodoListItem key={todo.id} todo={todo}/>)
+    );
 
     return (<ul>
         {todo_list_items}
