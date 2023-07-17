@@ -43,10 +43,29 @@ class DeleteTodo(graphene.Mutation):
         return DeleteTodo(ok=True)
 
 
+class TodoInput(graphene.InputObjectType):
+    text = graphene.String(required=True)
+    id = graphene.Int(required=True)
+
+
+class UpdateTodo(graphene.Mutation):
+    class Arguments:
+        todo_data = TodoInput(required=True)
+
+    todo = graphene.Field(Todo)
+
+    def mutate(root, id, todo_data=None):
+        todo = Todo(text=todo_data.text, id=todo_data.id)
+        gen = (idx for idx, curr_todo in enumerate(_todos) if curr_todo.id == todo_data.id)
+        todo_idx = next(gen)
+        _todos[todo_idx].text = todo_data.text
+        return UpdateTodo(todo=todo)
+    
+
 class MyMutations(graphene.ObjectType):
     create_todo = CreateTodo.Field()
     delete_todo = DeleteTodo.Field()
-
+    update_todo = UpdateTodo.Field()
 
 class Episode(graphene.Enum):
     NEWHOPE = 4

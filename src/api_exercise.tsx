@@ -37,6 +37,18 @@ const DELETE_TEXT_TODO_MUTATION_STR = /* GraphQL */ `
   }
 `;
 
+const UPDDATE_TEXT_TODO_MUTATION_STR = /* GraphQL */ `
+  mutation UpdateTodo($todo: TodoInput!) {
+    updateTodo(todoData: $todo) {
+        todo {
+            text
+            id
+        }
+    }
+  }
+`;
+
+
 // todo: disable button when input empty
 const GqlMutationInput: React.FC = () => {
     const [todo_text, set_todo_text] = useState('');
@@ -90,9 +102,23 @@ type TextTodo = {
 };
 
 const TodoListItem: React.FC<{todo: TextTodo}> = ({todo}) => {
-    const delete_todo_mutation : DocumentNode = gql(DELETE_TEXT_TODO_MUTATION_STR) as DocumentNode;
+    const [is_editing, set_is_editing] = useState(false);
+    const [update_text, set_update_text] = useState(todo.text as string);
 
-    const [delete_todo, {data, loading, error}] = useMutation(delete_todo_mutation, {
+    const delete_todo_mutation : DocumentNode = gql(DELETE_TEXT_TODO_MUTATION_STR) as DocumentNode;
+    const update_todo_mutation : DocumentNode = gql(UPDDATE_TEXT_TODO_MUTATION_STR) as DocumentNode;
+
+    const [delete_todo, 
+        {data: delete_data, loading: delete_loading, error: delete_error}
+    ] = useMutation(delete_todo_mutation, {
+        refetchQueries: [
+            'TextTodosQuery'
+        ]
+    });
+
+    const [update_todo, 
+        {data: update_data, loading: update_loading, error: update_error}
+    ] = useMutation(update_todo_mutation, {
         refetchQueries: [
             'TextTodosQuery'
         ]
@@ -101,8 +127,34 @@ const TodoListItem: React.FC<{todo: TextTodo}> = ({todo}) => {
     const handle_delete_click = (event : MouseEvent<HTMLButtonElement>) => {
         delete_todo({variables: {id: todo.id}});
     };
+
+    const handle_edit_click = (event : MouseEvent<HTMLButtonElement>) => {
+        set_is_editing(true);
+    }
+
+    const on_input_change = (event: React.ChangeEvent<HTMLInputElement>) => {
+        set_update_text(event.target.value);
+    };
+
+    const on_button_click = (event : MouseEvent<HTMLButtonElement>) => {
+        update_todo({variables: {todo: {text: update_text, id: todo.id}}})
+        set_is_editing(false);
+    };
+
+
     return (<li>
-        <span>{todo.text}</span>
+        {is_editing ? 
+        <span>
+        <input
+            type="text"
+            id="todo-text"
+            name="todo-text"
+            onChange={on_input_change}
+            value={update_text}
+        />
+        <button onClick={on_button_click}>Save</button>
+        </span> :       
+        <span onClick={handle_edit_click}>{todo.text}</span>}
         <button onClick={handle_delete_click}>delete</button>
         </li>);
 };
