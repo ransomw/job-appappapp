@@ -50,7 +50,7 @@ const UPDDATE_TEXT_TODO_MUTATION_STR = /* GraphQL */ `
 
 
 // todo: disable button when input empty
-const GqlMutationInput: React.FC = () => {
+const TextOnlyTodoInput: React.FC = () => {
     const [todo_text, set_todo_text] = useState('');
 
     // todo: use generated gql function rather than apollo client import?
@@ -159,7 +159,7 @@ const TodoListItem: React.FC<{todo: TextTodo}> = ({todo}) => {
         </li>);
 };
 
-const TextOnlyTodoList: React.FC = () => {
+const TextOnlyTodoListItems: React.FC = () => {
     const text_todos_query : DocumentNode = gql(TEXT_TODOS_QUERY_STR) as DocumentNode;
     const {loading, data} = useQuery(text_todos_query);
 
@@ -177,7 +177,16 @@ const TextOnlyTodoList: React.FC = () => {
     </ul>);
 };
 
-const ApiExercise: React.FC = () => {
+export const TextOnlyTodoList: React.FC = () => {
+    return (
+        <div>
+            <TextOnlyTodoInput/>
+            <TextOnlyTodoListItems/>
+        </div>
+    )
+}
+
+export const ApiExercise: React.FC = () => {
 
 
     const test_query : DocumentNode = gql(TEST_QUERY_STR) as DocumentNode;
@@ -191,10 +200,7 @@ const ApiExercise: React.FC = () => {
             {loading ? (<p>loading...</p>) :
             ( <p>{data && data.goodbye}</p>)}
         </div>
-        <GqlMutationInput/>
-        <TextOnlyTodoList/>
+
     </div>);
 }
-
-export default ApiExercise;
 
