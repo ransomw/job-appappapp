@@ -26,7 +26,11 @@ and direct the browser to `localhost` at the port indicated in the log messages.
 
 ##### web 2.0
 
-`python server.py`
+`python server.py gql-schema`
+
+`npm run build:gql`
+
+`python server.py run-app`
 
 `npm start`
 
