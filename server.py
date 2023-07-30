@@ -96,22 +96,25 @@ HERO_LUKE = {"name": "Luke Skywalker", "appears_in": [
 ]}
 
 class Query(graphene.ObjectType):
-    # this defines a Field `hello` in our Schema with a single Argument `first_name`
-    # By default, the argument name will automatically be camel-based into firstName in the generated schema
     hello = graphene.String(first_name=graphene.String(default_value="stranger"))
     goodbye = graphene.String()
 
     hero = graphene.Field(Character, 
                            episode=graphene.Argument(Episode,
-# uncommenting the default_value line produces an error in the gql-schema command
-# https://github.com/graphql-python/graphene/issues/1293
                                                     default_value=Episode.JEDI
                                                     ))
 
     todos = graphene.List(Todo)
 
+    todo = graphene.Field(Todo, id=graphene.Argument(graphene.Int))
+
     def resolve_todos(root, info):
         return _todos
+    
+    def resolve_todo(root, info, id):
+        gen = (todo for todo in _todos if todo.id == id)
+        todo = next(gen)
+        return todo
 
     def resolve_hero(root, info, 
                      episode
