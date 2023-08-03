@@ -128,7 +128,7 @@ const TodoListItem: React.FC<{todo: TextTodo}> = ({todo}) => {
         delete_todo({variables: {id: todo.id}});
     };
 
-    const handle_edit_click = (event : MouseEvent<HTMLButtonElement>) => {
+    const handle_edit_click = (event : MouseEvent<HTMLSpanElement>) => {
         set_is_editing(true);
     }
 
